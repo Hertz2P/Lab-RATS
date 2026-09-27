@@ -166,8 +166,7 @@ function handleRequest(e) {
         "Battery", 
         "Stealth Status", 
         "Power", 
-        "Free Storage", 
-        "Screen"
+        "Free Storage"
       ]);
     }
     
@@ -183,8 +182,7 @@ function handleRequest(e) {
       data.battery || "0%",
       (data.stealth === true || data.stealth === "true") ? "ACTIVE" : "OFF",
       data.charging || "Discharging",
-      data.storage || "Unknown",
-      data.screen || "Unknown"
+      data.storage || "Unknown"
     ];
     
     sheet.appendRow(row);
