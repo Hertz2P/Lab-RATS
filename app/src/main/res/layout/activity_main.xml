@@ -39,15 +39,15 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginBottom="14dp"
-                android:background="#05034203"
+                android:background="#1F0B0B0B"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:paddingVertical="20dp">
 
                 <ImageView
                     android:id="@+id/imageView4"
-                    android:layout_width="218dp"
-                    android:layout_height="171dp"
+                    android:layout_width="227dp"
+                    android:layout_height="173dp"
                     android:layout_gravity="center"
                     app:srcCompat="@drawable/app_logo" />
 

