@@ -1,4 +1,4 @@
-<img width="1301" height="443" alt="Screenshot 2026-09-26 at 11 22 36 AM" src="https://github.com/user-attachments/assets/42a809c7-973c-41a3-acb4-6d79f0cd3483" />
+<img width="1266" height="354" alt="Screenshot 2026-09-27 at 4 09 43 PM" src="https://github.com/user-attachments/assets/db8e6f75-aa43-43c5-a3d4-197fb844d81f" />
 
 
 <p align="center">
@@ -145,7 +145,7 @@ The **Terminal Tabs Built-in Shell has been overhauled** for **professional work
 
 **Lab-RATS** supports **two primary methods** for **tracking your device fleet** and **receiving remote data**.
 
-### ☝🏻 Option 1: Google Sheet (Standard)
+### ☝🏻 Option 1: Google Sheet (Updated)
 **Best for basic IP tracking** and **logging**. **No server maintenance required**.
 
 1.  **Create** a **New Google Sheet**.
@@ -262,7 +262,7 @@ Once the **Target device** downloads the **APK**:
 3.  **Self-Vanishing**: A few seconds **after launch, the app will automatically replace its icon and name** with the **decoy you chose during build** *("System Update", "Calculator"...etc)*.
 4.  **Uplink Confirmation**: Check your **Google Sheet**. Within **5 seconds of initialization**, the **Device Brand & Model #, Connection Type, IP Address, Port #, Active C2 Dashboard Link, Battery %, Stealth Status, Charging Status and Storage Space will appear in the log**.
 
-### Example Google Sheet:
+### Example Google Sheet Reporting:
 > <img width="1047" height="418" alt="Google Sheet Reporting" src="https://github.com/user-attachments/assets/ad174175-eed8-46b4-bd8d-8c72895cf88a" />
 
 ---
@@ -311,7 +311,7 @@ https://github.com/user-attachments/assets/45419d9f-df4f-478e-8e69-d3c42ef09bdb
 
 ### Built APK (C2 Server) Installed on Android Device:
 
-<img width="247" height="543" alt="Screenshot 2026-09-26 at 12 25 38 PM" src="https://github.com/user-attachments/assets/7af0ff8e-f174-48ff-9bb3-78f76c63922c" />
+<img width="296" height="598" alt="Screenshot 2026-09-27 at 4 15 09 PM" src="https://github.com/user-attachments/assets/a49c5f91-5254-447c-baef-f76048773ec3" />
 
 ---
 
