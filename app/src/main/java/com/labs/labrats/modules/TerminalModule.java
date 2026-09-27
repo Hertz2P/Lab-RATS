@@ -381,9 +381,17 @@ public class TerminalModule extends BaseModule {
                 intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
                 
                 try {
-                    context.startService(intent);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        try {
+                            context.startForegroundService(intent);
+                        } catch (Exception fgEx) {
+                            context.startService(intent);
+                        }
+                    } else {
+                        context.startService(intent);
+                    }
                 } catch (Exception e) {
-                    return "Error starting bridge: " + e.getMessage();
+                    return executeTermuxDirectFallback(termuxCmd);
                 }
 
                 final java.util.concurrent.CountDownLatch latch = new java.util.concurrent.CountDownLatch(1);
@@ -443,10 +451,10 @@ public class TerminalModule extends BaseModule {
                             try { Thread.sleep(1000); } catch (Exception ignored) {}
                         }
                     }
-                } else {
-                    return "Command timed out.\n" +
-                           "Note: Larger installs like 'nmap' or 'python' can take 1-2 minutes.";
                 }
+                
+                // Fallback to direct process execution if RunCommandService failed or timed out
+                return executeTermuxDirectFallback(termuxCmd);
             }
 
             if (trimmedCmd.startsWith("cd") && (trimmedCmd.length() == 2 || Character.isWhitespace(trimmedCmd.charAt(2)))) {
@@ -615,6 +623,63 @@ public class TerminalModule extends BaseModule {
             return result;
         } catch (Exception e) {
             return "Shell Error: " + e.getMessage();
+        }
+    }
+
+    private String executeTermuxDirectFallback(String command) {
+        try {
+            File termuxBin = new File("/data/data/com.termux/files/usr/bin/bash");
+            String shPath = termuxBin.exists() ? termuxBin.getAbsolutePath() : "sh";
+            
+            ProcessBuilder pb = new ProcessBuilder(shPath, "-c", command);
+            Map<String, String> env = pb.environment();
+            String currentPath = env.get("PATH");
+            env.put("PATH", "/data/data/com.termux/files/usr/bin:/data/data/com.termux/files/usr/bin/applets" + (currentPath != null ? ":" + currentPath : ""));
+            env.put("HOME", "/data/data/com.termux/files/home");
+            env.put("PREFIX", "/data/data/com.termux/files/usr");
+            env.put("LD_LIBRARY_PATH", "/data/data/com.termux/files/usr/lib");
+            env.put("DEBIAN_FRONTEND", "noninteractive");
+            
+            File homeDir = new File("/data/data/com.termux/files/home");
+            if (homeDir.exists()) {
+                pb.directory(homeDir);
+            }
+            
+            Process process = pb.start();
+            
+            java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+            byte[] buffer = new byte[8192];
+            int len;
+            try (java.io.InputStream is = process.getInputStream()) {
+                while ((len = is.read(buffer)) != -1) {
+                    baos.write(buffer, 0, len);
+                }
+            }
+            try (java.io.InputStream es = process.getErrorStream()) {
+                while ((len = es.read(buffer)) != -1) {
+                    baos.write(buffer, 0, len);
+                }
+            }
+            
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                process.waitFor(30, java.util.concurrent.TimeUnit.SECONDS);
+            } else {
+                process.waitFor();
+            }
+            String output = baos.toString("UTF-8").trim();
+            if (output.isEmpty()) {
+                return "Termux Bridge Execution Error / No Output.\n\n" +
+                       "If using Termux RunCommandService, ensure external commands are enabled in Termux:\n" +
+                       "  1. Open Termux app on target device\n" +
+                       "  2. Run: echo \"allow-external-apps = true\" >> ~/.termux/termux.properties\n" +
+                       "  3. Run: termux-reload-settings";
+            }
+            return output + "\n\n[Termux Direct Bridge Execution Complete]";
+        } catch (Exception e) {
+            return "Termux Bridge Error: " + e.getMessage() + "\n\n" +
+                   "To allow external command execution, run this in Termux:\n" +
+                   "  echo \"allow-external-apps = true\" >> ~/.termux/termux.properties\n" +
+                   "  termux-reload-settings";
         }
     }
 

