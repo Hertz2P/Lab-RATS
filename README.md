@@ -121,11 +121,11 @@
 ### 🛠️ **NEW!** **Termux Bridge Integration**
 
 **Lab-RATS** now features a **high-performance bridge to the Termux environment**. If **Termux is installed on the target device**, the remote terminal can **instantly elevate its capabilities**:
-- **Auto-Routing**: Common commands like `pkg`, `apt`, `pip`, and `python` are **automatically routed through the bridge**.
-- **Unrestricted Tools**: Install and run **Python scripts, Nmap scans, or Metasploit** directly from the **C2 web terminal**.
+- **Auto-Routing**: Common commands like `pkg`, `apt`, `pip`, and `python` are **routed through the bridge**.
+- **Unrestricted Tools**: **Install** and **run Python scripts, Nmap scans, or Metasploit** from the **C2 web terminal**.
 - **Persistent Environment**: Full support for **Termux's internal storage** and **standard Linux binaries**.
 > [!NOTE]
-> **Termux Bridge Issues**: "**Termux `allow-external-apps` setting is disabled**". (Most Common)
+> **Termux Bridge Issues**: "**Termux `allow-external-apps` setting is disabled**".(Most Common)
 <br>**Solution**: **On the Target Device** open **Termux and run**:
 ```
 echo "allow-external-apps = true" >> ~/.termux/termux.properties
