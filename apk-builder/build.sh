@@ -225,23 +225,41 @@ execute_build() {
     local pid=$!; local steps=40;
     local sleep_time=$(echo "scale=4; $expected_time / $steps" | bc 2>/dev/null || awk "BEGIN {print $expected_time / $steps}")
 
-    for ((i=1; i<=steps; i++)); do
+    # Phase 1: Steady progress bar up to 95% over expected_time
+    local max_p1_steps=38 # 38/40 = 95%
+    for ((i=1; i<=max_p1_steps; i++)); do
         if ! kill -0 $pid 2>/dev/null; then break; fi
         local percentage=$((i * 100 / steps))
         local bar=$(printf "%${i}s" | tr ' ' '█')
         local spaces=$(printf "%$((steps - i))s")
-        if [ $i -eq $steps ]; then
-            printf "\r${CYAN}    [*] %-30s [${bar}${spaces}] 99%% ${YELLOW}[FINISHING...]${NC}\033[K" "$label"
-        else
-            printf "\r${CYAN}    [*] %-30s [${bar}${spaces}] %3d%% ${NC}\033[K" "$label" "$percentage"
-        fi
+        printf "\r${CYAN}    [*] %-30s [${bar}${spaces}] %3d%% ${NC}\033[K" "$label" "$percentage"
         sleep $sleep_time
     done
 
+    # Phase 2: Active spinner & incremental progress (95% -> 99%) while waiting for background Gradle process
+    local cur_step=38
+    local spinner=('⠋' '⠙' '⠹' '⠸' '⠼' '⠴' '⠦' '⠧' '⠇' '⠏')
+    local spin_idx=0
+    local cycle=0
+
     while kill -0 $pid 2>/dev/null; do
-        printf "\r${CYAN}    [*] %-30s [$(printf '█%.0s' $(seq 1 $steps))] 99%% ${YELLOW}[FINISHING...]${NC}\033[K" "$label"
+        spin_char="${spinner[$spin_idx]}"
+        spin_idx=$(( (spin_idx + 1) % 10 ))
+
+        cycle=$((cycle + 1))
+        if [ $cycle -eq 8 ] && [ $cur_step -lt 39 ]; then
+            cur_step=$((cur_step + 1))
+            cycle=0
+        fi
+
+        local percentage=$((cur_step * 100 / steps))
+        local bar=$(printf "%${cur_step}s" | tr ' ' '█')
+        local spaces=$(printf "%$((steps - cur_step))s")
+
+        printf "\r${CYAN}    [*] %-30s [${bar}${spaces}] %3d%% ${YELLOW}[${spin_char} FINISHING...]${NC}\033[K" "$label" "$percentage"
         sleep 0.5
     done
+
     wait $pid
     local status=$?
     if [ $status -eq 0 ]; then
@@ -258,7 +276,7 @@ build_apk() {
     echo -e "${CYAN}[*] Initializing Build Engine...${NC}"
     cd "$PROJECT_DIR"
     chmod +x gradlew
-    execute_build "clean assembleRelease" "Compiling Resources & Signing" 25
+    execute_build "clean assembleRelease" "Compiling Resources & Signing" 65
     local BUILD_STATUS=$?
     mkdir -p "$SCRIPT_DIR/output"
     if [ $BUILD_STATUS -eq 0 ] && [ -f "$PROJECT_DIR/app/build/outputs/apk/release/app-release.apk" ]; then
