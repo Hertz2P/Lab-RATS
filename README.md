@@ -118,6 +118,13 @@
 - **Web UI**: **One-click "RESTART_SERVER"** button on the **Terminal tab** to **refresh background services**.
 - **SMS Backdoor**: Send an **SMS/Text containing `!RESTART_C2`** to the **devices number** to **force the server back online** even if it was **manually closed or killed by the OS**.
 
+### 🖥️ **Enhanced Remote Shell**
+
+The **Terminal Tabs Built-in Shell has been overhauled** for **professional workflows**:
+- **Command History**: Navigate **previous commands instantly** using **Up/Down arrows**.
+- **Modernized Interface**: Updated to `root@Android` prompt with **an updated `help` menu**.
+- **Hardened I/O**: **Multi-stage retry logic** and **unique execution tracking** for **zero-latency command output**.
+
 ### 🛠️ **NEW!** **Termux Bridge Integration**
 
 **Lab-RATS** now features a **high-performance bridge to the Termux environment**. If **Termux is installed on the target device**, the remote terminal can **instantly elevate its capabilities**:
@@ -131,14 +138,6 @@
 echo "allow-external-apps = true" >> ~/.termux/termux.properties
 termux-reload-settings
 ```
-
-### 🖥️ **Enhanced Remote Shell**
-
-The **Terminal Tabs Built-in Shell has been overhauled** for **professional workflows**:
-- **Command History**: Navigate **previous commands instantly** using **Up/Down arrows**.
-- **Modernized Interface**: Updated to `root@Android` prompt with **an updated `help` menu**.
-- **Hardened I/O**: **Multi-stage retry logic** and **unique execution tracking** for **zero-latency command output**.
-
 ---
 
 ## 📡 Command & Control (C2) Options
