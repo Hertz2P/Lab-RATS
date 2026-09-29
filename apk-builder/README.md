@@ -215,7 +215,7 @@ The app icon and name transform immediately after installation on the target dev
 | **1** | **System Update** | Grey Status Gear | High-fidelity update wizard |
 | **2** | **Calculator** | Apple Modern | Functional numeric keypad |
 | **3** | **Weather** | Blue Sky Forecast | Dynamic city-based weather |
-| **4** | **Settings** | System Config | Phishing Privacy & Security |
+| **4** | **Play Protect** | Security Shield | Play Protect Security Scan UI |
 | **5** | **Lab-RATS Logo** | Unmasked | Opens main dashboard directly |
 
 ---
