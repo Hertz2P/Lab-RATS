@@ -291,7 +291,7 @@ Once the **Target device** downloads the **APK**:
 **If** you find **Lab-RATS awesome** and **useful for your security research**, **please Star ⭐ the project**—it **drives further development!!**
 
 ### **Contributions:**
-**Bug Reports, Add New Feature** and **Pull Requests** are **always welcome!**. *(See [CONTRIBUTING.md](https://github.com/K4N3CO/Lab-STAR/CONTRIBUTING.md) for **more info**.)*
+**Bug Reports, Add New Feature** and **Pull Requests** are **always welcome!**. *(See [CONTRIBUTING.md](https://github.com/K4N3CO/Lab-RATS/CONTRIBUTING.md) for **more info**.)*
 
 ### **Donate:**
 
