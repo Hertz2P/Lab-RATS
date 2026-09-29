@@ -191,7 +191,8 @@
                             android:padding="6dp"
                             android:text="UPLINK_INACTIVE"
                             android:textColor="@color/neon_cyan"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
                     </LinearLayout>
                 </LinearLayout>

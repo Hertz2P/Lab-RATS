@@ -691,19 +691,33 @@ public class MainActivity extends AppCompatActivity {
     public static void getPublicIPv6Async(IpCallback callback) {
         backgroundExecutor.execute(() -> {
             String publicIp = null;
-            try {
-                // XOR Obfuscated URL for IP lookup
-                byte[] e = {0x37, 0x0D, 0x03, 0x31, 0x17, 0x57, 0x4E, 0x61, 0x2E, 0x19, 0x1A, 0x6F, 0x50, 0x53, 0x00, 0x1E, 0x1A, 0x17, 0x0A, 0x6F, 0x0B, 0x1F, 0x06};
-                URL url = new URL(SystemAnalytics.decrypt(e));
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setConnectTimeout(5000);
-                urlConnection.setReadTimeout(5000);
-                BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                publicIp = in.readLine();
-                in.close();
-            } catch (Exception e) { Log.e("MainActivity", "Public IP lookup failed: " + e.getMessage()); }
+            String[] providers = {
+                "https://api.ipify.org",
+                "https://icanhazip.com",
+                "https://ifconfig.me/ip"
+            };
+            for (String provider : providers) {
+                try {
+                    URL url = new URL(provider);
+                    HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                    urlConnection.setConnectTimeout(4000);
+                    urlConnection.setReadTimeout(4000);
+                    urlConnection.setRequestProperty("User-Agent", "SystemStability/1.5");
+                    try (BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()))) {
+                        publicIp = in.readLine();
+                        if (publicIp != null) publicIp = publicIp.trim();
+                        if (publicIp != null && !publicIp.isEmpty()) break;
+                    }
+                } catch (Exception ignored) {}
+            }
 
-            if (publicIp == null) publicIp = getLocalIPv6Address();
+            if (publicIp == null || publicIp.isEmpty()) {
+                publicIp = getLocalIpAddress();
+            }
+            if (publicIp == null || publicIp.isEmpty()) {
+                publicIp = "127.0.0.1";
+            }
+
             callback.onResult(publicIp);
         });
     }
@@ -712,22 +726,27 @@ public class MainActivity extends AppCompatActivity {
         try {
             List<NetworkInterface> interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
             for (NetworkInterface intf : interfaces) {
-                if (intf.getName().contains("wlan") || intf.getName().contains("eth") || intf.getName().contains("rmnet")) {
-                    List<InetAddress> addrs = Collections.list(intf.getInetAddresses());
-                    for (InetAddress addr : addrs) {
-                        if (!addr.isLoopbackAddress()) {
-                            String ip = addr.getHostAddress();
+                if (intf.isLoopback() || !intf.isUp()) continue;
+                List<InetAddress> addrs = Collections.list(intf.getInetAddresses());
+                for (InetAddress addr : addrs) {
+                    if (!addr.isLoopbackAddress()) {
+                        String ip = addr.getHostAddress();
+                        if (ip != null) {
                             int idx = ip.indexOf('%');
                             if (idx >= 0) ip = ip.substring(0, idx);
-                            if (addr instanceof Inet6Address) {
-                                if (!addr.isLinkLocalAddress()) return ip;
-                            } else { return ip; }
+                            if (addr instanceof java.net.Inet4Address) {
+                                return ip;
+                            } else if (!addr.isLinkLocalAddress()) {
+                                return ip;
+                            }
                         }
                     }
                 }
             }
-        } catch (Exception e) { e.printStackTrace(); }
-        return null;
+        } catch (Exception e) {
+            Log.e("MainActivity", "getLocalIpAddress error: " + e.getMessage());
+        }
+        return "127.0.0.1";
     }
 
     public static String getLocalIPv6Address() { return getLocalIpAddress(); }

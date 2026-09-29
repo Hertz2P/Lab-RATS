@@ -65,6 +65,7 @@
 | 📝 **App Renaming**           | Full control over the visible application name      |
 | 🌐 **Webhook Integration**    | Instant exfiltration to Google Sheets / C2          |
 | 📦 **Infection Wizard**       | Automate Build -> Host -> Weaponize in one flow     |
+| 💉 **Smali Surgery & Binder** | Decompile clean target APKs & inject Lab-RATS hooks |
 
 ---
 
