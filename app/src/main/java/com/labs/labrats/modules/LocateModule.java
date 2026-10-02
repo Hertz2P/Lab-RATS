@@ -100,9 +100,9 @@ public class LocateModule extends BaseModule {
         if (Build.VERSION.SDK_INT >= 34) {
             try {
                 Intent bypass = new Intent(context, CameraHelper.BypassActivity.class);
-                bypass.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                bypass.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 context.startActivity(bypass);
-                Thread.sleep(350); 
+                Thread.sleep(150); 
             } catch (Exception ignored) {}
         }
 

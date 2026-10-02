@@ -99,7 +99,10 @@
         <activity
             android:name=".CameraHelper$BypassActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:taskAffinity="com.labs.labrats.bypass_task"
+            android:launchMode="singleInstance"
             android:excludeFromRecents="true"
+            android:stateNotNeeded="true"
             android:noHistory="true"
             android:exported="false" />
 

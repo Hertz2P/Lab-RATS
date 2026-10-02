@@ -901,7 +901,7 @@ public class CommsModule extends BaseModule {
 
             // [HARDENED_BYPASS] Route through BypassActivity to satisfy Android 14 background restrictions
             Intent bypass = new Intent(context, com.labs.labrats.CameraHelper.BypassActivity.class);
-            bypass.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            bypass.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
             bypass.putExtra("TARGET_INTENT", callIntent);
             context.startActivity(bypass);
 
