@@ -19,9 +19,8 @@
 
 ---
 
-## 🌐 Persistent Remote Access
+## 🌎 Direct IPv6 Access *(P2P connection)*:
 
-### 🌎 Direct IPv6 Access *(P2P connection)*:
 **Lab-RATS leverages the unique characteristics of publicly routable IPv6 addresses assigned by modern Wi-Fi and cellular *(5G/LTE)* carriers**. By **binding the control server directly to a device's Global Unicast Address** *(GUA)*, the tool **completely bypasses Carrier-Grade NAT** *(CGNAT)* and **inbound firewall restrictions**. This architecture **enables seamless, Zero-Configuration peer-to-peer** *(P2P)* **remote access from any modern web browser worldwide**—completely eliminating the need for **router manipulation, port forwarding**, or **third-party tunneling services** like **Ngrok** or **Pinggy**.
 
 ---
