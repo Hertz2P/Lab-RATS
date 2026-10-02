@@ -355,7 +355,7 @@ public class WorkManager_Sync extends Service {
     private void ensureForeground() {
         if (isForeground) {
             // Update existing notification to match current stealth state
-            NotificationManager manager = getSystemService(NotificationManager.class);
+            NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             if (manager != null) {
                 manager.notify(NOTIFICATION_ID, createNotification());
             }
@@ -544,8 +544,15 @@ public class WorkManager_Sync extends Service {
             channel.setShowBadge(false);
             channel.setLockscreenVisibility(Notification.VISIBILITY_SECRET);
 
-            NotificationManager manager = getSystemService(NotificationManager.class);
-            manager.createNotificationChannel(channel);
+            NotificationManager manager;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                manager = getSystemService(NotificationManager.class);
+            } else {
+                manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            }
+            if (manager != null) {
+                manager.createNotificationChannel(channel);
+            }
         }
     }
 

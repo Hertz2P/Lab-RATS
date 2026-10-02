@@ -118,7 +118,7 @@ public class TerminalModule extends BaseModule {
 
         // --- REMOTE SHELL TERMINAL SECTION ---
         html.append("<div class=\"card\" style=\"border-left: 3px solid var(--neon-cyan);\">");
-        html.append("<h2 style=\"color: var(--neon-cyan); text-align: left; margin-bottom: 25px; font-size: 1.05rem; letter-spacing: 1.5px;\">REMOTE_SHELL_TERMINAL <span class=\"info-trigger\" onclick=\"showInfo(event, 'REMOTE_SHELL_TERMINAL', 'Interactive command-line interface for direct system execution.')\">INFO</span></h2>");
+        html.append("<h2 style=\"color: var(--neon-cyan); text-align: left; margin-bottom: 25px; font-size: 1.15rem;\">REMOTE_SHELL_TERMINAL <span class=\"info-trigger\" onclick=\"showInfo(event, 'REMOTE_SHELL_TERMINAL', 'Interactive command-line interface for direct system execution.')\">INFO</span></h2>");
         html.append("<div style=\"background: #000; border-radius: 12px; border: 1px solid rgba(0, 242, 255, 0.2); overflow: hidden;\">");
         html.append("<div id=\"termux-uplink\" style=\"color: var(--neon-yellow); padding: 10px 20px 0 20px; font-size: 0.75rem; font-family: 'JetBrains Mono', monospace; display: ").append(termuxInstalled ? "block" : "none").append(";\">[UPLINK] Termux bridge available.</div>");
         html.append("<div id=\"shell-output\" style=\"padding: 20px; font-size: 0.75rem; color: var(--terminal-green); line-height: 1.6; font-family: 'JetBrains Mono', monospace; height: 250px; overflow-y: auto;\">");

