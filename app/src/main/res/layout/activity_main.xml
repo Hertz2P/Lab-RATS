@@ -34,64 +34,15 @@
 
             <!-- Header -->
 
-            <LinearLayout
+            <ImageView
+                android:id="@+id/ivHeaderBanner"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginBottom="14dp"
-                android:background="#1F0B0B0B"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:paddingVertical="20dp">
-
-                <ImageView
-                    android:id="@+id/imageView4"
-                    android:layout_width="227dp"
-                    android:layout_height="173dp"
-                    android:layout_gravity="center"
-                    app:srcCompat="@drawable/app_logo" />
-
-                <TextView
-                    android:id="@+id/tvAppTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:alpha="0.8"
-                    android:fontFamily="@font/orbitron"
-                    android:letterSpacing="0.05"
-                    android:text="LAB-RATS"
-                    android:textAlignment="center"
-                    android:textAllCaps="false"
-                    android:textColor="@color/neon_cyan"
-                    android:textSize="36sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvDevelopedBy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:alpha="0.9"
-                    android:fontFamily="@font/aldrich"
-                    android:letterSpacing="0.12"
-                    android:text="DEVELOPED BY K4N3CO.LABS"
-                    android:textAllCaps="true"
-                    android:textColor="@color/neon_cyan"
-                    android:textColorLink="#FC2F8014"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    tools:ignore="TextSizeCheck" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:alpha="0.9"
-                    android:fontFamily="@font/aldrich"
-                    android:letterSpacing="0.2"
-                    android:text="v1.5.1"
-                    android:textColor="@color/neon_cyan"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
+                android:layout_height="255dp"
+                android:layout_marginBottom="30dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/header_card_bg"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/header" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -114,7 +65,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="199dp"
                         android:background="#73040404"
                         android:gravity="bottom"
                         android:orientation="vertical"
@@ -156,7 +107,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:alpha="0.9"
-                            android:background="@color/update_gray"
+                            android:background="#192824"
                             android:fontFamily="@font/aldrich"
                             android:gravity="center_vertical"
                             android:letterSpacing="0.05"
@@ -184,7 +135,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:background="@color/update_gray"
+                            android:background="#192824"
                             android:fontFamily="@font/assistant"
                             android:gravity="center_vertical"
                             android:minHeight="38dp"
@@ -202,7 +153,7 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnStartStop"
                 android:layout_width="match_parent"
-                android:layout_height="49dp"
+                android:layout_height="47dp"
                 android:layout_marginBottom="11dp"
                 android:backgroundTint="#EA00F2FF"
                 android:fontFamily="@font/orbitron"
@@ -220,7 +171,7 @@
                 android:id="@+id/btnCopyUrl"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="match_parent"
-                android:layout_height="36dp"
+                android:layout_height="38dp"
                 android:layout_marginBottom="12dp"
                 android:fontFamily="@font/orbitron"
                 android:insetTop="0dp"

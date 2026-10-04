@@ -210,11 +210,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startGlitchAnimation() {
-        // [STABILITY_PATCH] Disabled aggressive animation to prevent Accessibility Service floods
-        // which were causing phone freezes and ANRs on some devices.
-        TextView tvDevelopedBy = findViewById(R.id.tvDevelopedBy);
-        tvDevelopedBy.setTextColor(0xFF00f2ff);
-        tvDevelopedBy.setAlpha(0.9f);
+        // Header banner initialized
     }
 
     private long lastPermissionRequestTime = 0;
