@@ -88,7 +88,7 @@
 ### 👻 Ghost_Operations:
 - **Ghost Control/Live Feed**: **Cast & Control the live screen remotely** with **NO "Consent Prompt" required**.
 - **Blackout Mode**: A **high-stealth mode** designed to **physically mask the targets device display** while maintaining a **NON-masked live remote feed**. *(Pair with Ghost Control for maximum stealth)*
-- **NEW! Ghost_Toast**: Dispatch **tactical, persistent overlays**. Supports **Custom Colors, Animations (Pop, Static, Scroll)**, and **Chaotic "Burnt_Toast" mode** *(multiple random popups spawn to overwhelm the device)*.
+- **NEW! Ghost_Toast**: Remotely deploy **tactical, persistent pop-up overlays** with **fully customizable text** *(color, size, and screen positioning)*. Features **multiple animation styles** *(pop, static, and side-scroll)* alongside a **high-intensity "Burnt_Toast" mode** that **floods the screen with randomized pop-ups** to overwhelm the device.
 - **NEW! Remote System Denial Lock**: Deploy a **persistent, full-screen security overlay** to **lock physical interaction** and **render the device inoperable until hard-reset/restarted** or **unlocked remotely from the C2 dashboard**.
 - **Live Keylogging**: Intercept **keystrokes** and **system text in real-time**. Now features **Sensitive Info Highlighting** *(Passcodes, OTPs, Emails glow Red)* and **Deep Extraction** for **browser login info**.
 
@@ -112,7 +112,7 @@
 - **Nightmode V2**: Aggressive **electronic brightening** for **low-light environments**. Now features **Hardware Breathe Sync** and **AE Bypass** for **zero-freeze operation** on **modern high-latency sensors**.
 
 ### 🎙️ Acoustics & Interception:
-- **Live microphone recording** and **automated call recording** for **both incoming and outgoing calls**.
+- **Timed or Live microphone recording** and **automated call recording** for **both incoming and outgoing calls**.
 
 ### 📂 Advanced Data Uplink:
 - **Integrated File Manager**: **Navigate, download**, and **manage files**. Features an **instant Search Bar** and **Category Filters**.
@@ -301,13 +301,13 @@ bc1q8d66m0qthnh6nw9hc5wl09m7pfydk46q5w8rxx
 
 ## 📸 Screenshots & Video Clips
 
-### APK-Builder Example (Mac OS):
+### APK-Builder Example *(Mac OS)*:
 
 https://github.com/user-attachments/assets/92767769-a141-42ad-a285-481e552d4706
 
 ---
 
-### Built APK (C2 Server) Installed on Android Device:
+### Built APK *(C2 Server)* Installed on Android Device:
 
 <img width="269" height="577" alt="Screenshot 2026-10-03 at 3 29 37 AM" src="https://github.com/user-attachments/assets/494bd9fa-ecda-42a1-8b1f-e13a868a9276" />
 
