@@ -4,13 +4,11 @@
 
 
 ## 1. Mission Statement
-
 **Lab-RATS** *(Remote Access Tool for Security)* is developed by **K4N3CO.LABS** as a **high-fidelity platform** for **mobile security auditing**, **forensic analysis**, and **authorized penetration testing**. Our **mission is to provide security professionals** and **researchers** with **a modern toolset** to understand **mobile vulnerabilities** and **validate defense-in-depth strategies** *(such as Samsung Knox and Play Protect)* in a **controlled, legal environment**.
 
 ---
 
 ## 2. The "Authorization First" Rule
-
 **The Most fundamental principle of this project is Consensual Authorization**:
 
 • **NEVER deploy Lab-RATS** on **ANY device that you do not personally own** or have **explicit, written legal permission from the owner to test**.
@@ -22,7 +20,6 @@
 ---
 
 ## 3. Prohibited Malicious Activities
-
 Users found to be using **Lab-RATS** for **ANY of the following activities will be banned** from the **project’s communication channels**, and their **issues/pull requests will be closed**:
 
 • **Deployment of the APK** as part of a **botnet** or **large-scale malware campaign**.
@@ -34,23 +31,20 @@ Users found to be using **Lab-RATS** for **ANY of the following activities will 
 ---
 
 ## 4. Handling Security Flags & Heuristics
+Due to the **powerful nature** of **Remote Admin Tools**, **Lab-RATS** includes features—such as **keylogging, camera access**, and **stealth masquerading** and **more**—that might be **inherently flagged by Antivirus** *(AV)*, **EDR**, and **Play Protect systems**:
 
-Due to the **powerful nature** of Remote Access Tools *(RATs)*, **Lab-RATS** includes features—such as **keylogging, camera access**, and **stealth masquerading**—that are **inherently flagged by Antivirus** *(AV)*, **EDR**, and **Play Protect systems**:
+• **False Positives**: We acknowledge that **security engines may flag this tool** as **"Dangerous."** This is **expected behavior** for **security research software**.
 
-• **False Positives**: We acknowledge that **security engines will flag this tool** as **"Dangerous."** This is **expected behavior** for **security research software**.
-
-• **Responsible Disclosure**: If you **discover a vulnerability** within **Lab-RATS** itself that could lead to **unauthorized access** to the **C2 panel**, please **report it privately** to the maintainers **rather than opening a public issue**.
+• **Responsible Disclosure**: If you **discover a vulnerability** within **Lab-RATS** itself that could lead to **unauthorized access** to the **C2 panel**, please **report it privately to the maintainers rather than opening a public issue**.
 
 ---
 
 ## 5. User Responsibility & Legal Compliance
-
-By building or installing **Lab-RATS**, you agree that you are **solely responsible** for compliance with your **local, state**, and **national laws**. The **developers assume NO liability** for **ANY misuse, damage to hardware**, or **legal consequences** resulting from **your use of this software**.
+By **building** or **installing Lab-RATS**, you **agree that you are solely responsible for compliance** with your **local, state**, and **national laws**. The **developers assume NO liability** for **ANY misuse, damage to hardware**, or **legal consequences** resulting from **your use of this software**.
 
 ---
 
 ## 6. Community Professionalism
-
 • **Respect Privacy**: When discussing **research findings**, **always redact sensitive information** *(IPs, phone numbers, or private data)*.
 
 • **Push the Limits, Respect the Laws**: We **encourage aggressive testing of mobile security boundaries**, provided it remains **within the scope of ethical hacking**.
