@@ -1,6 +1,6 @@
 # ====================================================================
 #                   Lab-RATS PowerShell Builder
-#                         v1.5.1 Hardened
+#                         v1.6.0 Hardened
 # ====================================================================
 # Developed by K4N3CO © 2026
 
@@ -43,7 +43,7 @@ function Write-Banner {
     Write-Host " │     ███████╗██║  ██║██████╔╝      ██║  ██║██║  ██║   ██║   ██████║    │" -ForegroundColor Cyan
     Write-Host " │     ╚══════╝╚═╝  ╚═╝╚═════╝       ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═════╝    │" -ForegroundColor Cyan
     Write-Host " │                                                                       │" -ForegroundColor Cyan
-    Write-Host " │     ----------> Android APK Builder | v1.5.1 Hardened <----------     │" -ForegroundColor Cyan
+    Write-Host " │     ----------> Android APK Builder | v1.6.0 Hardened <----------     │" -ForegroundColor Cyan
     Write-Host " │                                                                       │" -ForegroundColor Cyan
     Write-Host " │   The one's who MIND don't matter. The one's who MATTER don't mind.   │" -ForegroundColor Cyan
     Write-Host " │                         DEVELOPED BY K4N3CO                           │" -ForegroundColor Cyan
@@ -367,7 +367,7 @@ function Show-InfectionWizard {
 
 function Show-Help {
     Write-Banner
-    Write-Host "COMMAND_DOCUMENTATION_V1.5.1" -ForegroundColor White
+    Write-Host "COMMAND_DOCUMENTATION_V1.6.0" -ForegroundColor White
     Write-Host "------------------------------------------------------------"
     Write-Host "1. Start Build: Standard production flow."
     Write-Host "2. Keystore Only: Unique signing certificate."

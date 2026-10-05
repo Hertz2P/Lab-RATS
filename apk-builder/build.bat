@@ -2,7 +2,7 @@
 setlocal EnableDelayedExpansion
 chcp 65001 >nul 2>&1
 
-title Lab-RATS APK Builder v1.5.1 - by K4N3CO
+title Lab-RATS APK Builder v1.6.0 - by K4N3CO
 
 set "SCRIPT_DIR=%~dp0"
 set "PROJECT_DIR=%SCRIPT_DIR%.."
@@ -40,7 +40,7 @@ echo │     ██║     ██╔══██║██╔══██╗╚�
 echo │     ███████╗██║  ██║██████╔╝      ██║  ██║██║  ██║   ██║   ██████║    │
 echo │     ╚══════╝╚═╝  ╚═╝╚═════╝       ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═════╝    │
 echo │                                                                       │
-echo │     ----------> Android APK Builder | v1.5.1 Hardened <----------     │
+echo │     ----------> Android APK Builder | v1.6.0 Hardened <----------     │
 echo │                                                                       │
 echo │   The one's who MIND don't matter. The one's who MATTER don't mind.   │
 echo │                         DEVELOPED BY K4N3CO                           │
@@ -362,7 +362,7 @@ goto :eof
 
 :show_help
 call :print_banner
-echo COMMAND_DOCUMENTATION_V1.5.1
+echo COMMAND_DOCUMENTATION_V1.6.0
 echo ------------------------------------------------------------
 echo 1. Start Build: Standard production flow.
 echo 2. Keystore Only: Unique signing certificate.

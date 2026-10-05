@@ -27,7 +27,7 @@
  │     ███████╗██║  ██║██████╔╝      ██║  ██║██║  ██║   ██║   ██████║    │
  │     ╚══════╝╚═╝  ╚═╝╚═════╝       ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═════╝    │
  │                                                                       │
- │     ----------> Android APK Builder | v1.5.1 Hardened <----------     │
+ │     ----------> Android APK Builder | v1.6.0 Hardened <----------     │
  │                                                                       │
  │   The one's who MIND don't matter. The one's who MATTER don't mind.   │
  │                         DEVELOPED BY K4N3CO                           │
@@ -52,7 +52,7 @@
 
 ---
 
-## ✨ Features (v1.5.1 Hardened)
+## ✨ Features (v1.6.0 Hardened)
 
 | Feature                       | Description                                         |
 | ----------------------------- | --------------------------------------------------- |
@@ -240,7 +240,7 @@ The builder **supports 12 tactical delivery methods** across the Lab and Wizard:
 
 ---
 
-## 🔐 Persistence Layers (v1.5.1)
+## 🔐 Persistence Layers (v1.6.0)
 
 The "Hardened" build includes **multi-layer persistence**:
 

@@ -4,7 +4,7 @@
 #                   Lab-RATS                    #
 #                                               #
 #        Android APK BUILDER - Linux/Mac        #
-#                v1.5.1 Hardened                #
+#                v1.6.0 Hardened                #
 #                                               #
 #             Developed by: K4N3CO              #
 #################################################
@@ -56,7 +56,7 @@ print_banner() {
     echo " │     ███████╗██║  ██║██████╔╝      ██║  ██║██║  ██║   ██║   ██████║    │"
     echo " │     ╚══════╝╚═╝  ╚═╝╚═════╝       ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═════╝    │"                                                                                                          
     echo " │                                                                       │"
-    echo " │     ----------> Android APK Builder | v1.5.1 Hardened <----------     │"
+    echo " │     ----------> Android APK Builder | v1.6.0 Hardened <----------     │"
     echo " │                                                                       │" 
     echo " │   The one's who MIND don't matter. The one's who MATTER don't mind.   │"
     echo " │                         DEVELOPED BY K4N3CO                           │"
@@ -473,7 +473,7 @@ main_menu() {
 }
 show_help() {
     print_banner
-    echo -e "${WHITE}COMMAND_DOCUMENTATION_V1.5.1${NC}"
+    echo -e "${WHITE}COMMAND_DOCUMENTATION_V1.6.0${NC}"
     echo "------------------------------------------------------------"
     echo "1. Start Build: Standard production flow."
     echo "2. Keystore Only: Unique signing certificate."

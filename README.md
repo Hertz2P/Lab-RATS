@@ -263,7 +263,7 @@ function handleRequest(e) {
 
 #### C. Installation & Initialization
 Once the **Target device** downloads the **APK**:
-1.  **Manual Sideload**: If you have **physical access to the device**, use `adb install signed.apk`    
+1.  **Manual Sideload**: If you have **physical access to the device**, use `adb install signed.apk`
 2.  **Permissions (CRITICAL)**: **Open the app ONCE**. It will **prompt for necessary permissions** *(Camera, SMS, Files, etc)*.
     -  **Remote Permission Prompt**: If the **user skips some permissions**, you can **remotely trigger the system prompt again** from the **Ghost Tab** using the **REPAIR PERMISSIONS** button.
 3.  **Self-Vanishing**: A few seconds **after launch, the app will automatically replace its icon and name** with the **decoy you chose during build** *("System Update", "Calculator"...etc)*.
@@ -313,7 +313,7 @@ https://github.com/user-attachments/assets/92767769-a141-42ad-a285-481e552d4706
 
 ---
 
-### Lab-RATS Initial Install Sequence & Icon Stealth Preview:  
+### Lab-RATS Initial Install Sequence & Icon Stealth Preview:
 
 https://github.com/user-attachments/assets/d1b27cb9-24bf-4f7b-8241-f839a9d5c145
 
