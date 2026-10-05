@@ -1,6 +1,6 @@
 # Lab-RATS: Code of Conduct & Ethical Usage Policy
-
-<img width="3880" height="3472" alt="app_logo" src="https://github.com/user-attachments/assets/bbcfac1d-523e-464f-8f82-da06090fa6bb" />
+<p align="center">
+<img width="1402" height="576" alt="Screenshot 2026-10-05 at 12 41 24 AM" src="https://github.com/user-attachments/assets/4ebdb492-33a8-4416-b14a-9b624df696b3" />
 
 
 ## 1. Mission Statement
