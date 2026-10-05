@@ -1,6 +1,5 @@
 <p align="center">
-<img width="1439" height="575" alt="Screenshot 2026-10-03 at 3 15 42 AM" src="https://github.com/user-attachments/assets/0b05e3bb-ea57-49d2-bec0-93ffd36d8bef" />
-
+<img width="1402" height="576" alt="Screenshot 2026-10-05 at 12 41 24 AM" src="https://github.com/user-attachments/assets/09438386-4637-4265-8488-f8b6774c45c5" />
 
 <p align="center">
   <img src="https://img.shields.io/badge/JDK-21-gold?style=for-the-badge&logo=openjdk&logoColor=white">
