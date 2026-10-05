@@ -1,6 +1,6 @@
 # Lab-RATS: Security & Vulnerability Policy
 <p align="center">
-<img width="3844" height="2264" alt="14634" src="https://github.com/user-attachments/assets/327d1d84-0d78-4f3b-8a5d-1aa3d5b3a09f" />
+<img width="1193" height="318" alt="Screenshot 2026-10-05 at 7 23 39 AM" src="https://github.com/user-attachments/assets/6ff909a2-8475-4f64-96b8-e3f65fcb4921" />
 
 ### Operational Security (OpSec) is our highest priority.
 If you find a hole in the **Lab-RATS engine** or a way to **compromise the C2 protocol**, **we expect you to handle it like a professional**.
