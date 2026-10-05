@@ -336,7 +336,7 @@ https://github.com/user-attachments/assets/ae0ede50-b58f-4a6d-962d-9cffd429c1af
 <details>
   <summary>📸 Click to view web page screenshot</summary>
   <br>
-  <img src="https://github.com/user-attachments/assets/985cbbe4-6cb0-450a-aa14-3453466b8eb8" alt="Full Web Page Screenshot" width="100%">
+  <img src="https://github.com/user-attachments/assets/920be29b-88bd-4516-82ff-1deb28cce098" alt="Full Web Page Screenshot" width="100%">
 </details>
 
 ---
@@ -346,7 +346,7 @@ https://github.com/user-attachments/assets/ae0ede50-b58f-4a6d-962d-9cffd429c1af
 <details>
   <summary>📸 Click to view web page screenshot</summary>
   <br>
-  <img src="https://github.com/user-attachments/assets/29cbb20f-f72f-4c21-beda-d06e0538ab5e" alt="Full Web Page Screenshot" width="100%">
+  <img src="https://github.com/user-attachments/assets/25021056-538d-4392-bbf1-e66a2c5873af" alt="Full Web Page Screenshot" width="100%">
 </details>
 
 ---
@@ -356,7 +356,7 @@ https://github.com/user-attachments/assets/ae0ede50-b58f-4a6d-962d-9cffd429c1af
 <details>
   <summary>📸 Click to view web page screenshot</summary>
   <br>
-  <img src="https://github.com/user-attachments/assets/ed3b0653-8118-418a-ba48-51b5c8b98737" alt="Full Web Page Screenshot" width="100%">
+  <img src="https://github.com/user-attachments/assets/9999afe8-84ad-4ae0-8871-343798913536" alt="Full Web Page Screenshot" width="100%">
 </details>
 
 ---
@@ -366,7 +366,7 @@ https://github.com/user-attachments/assets/ae0ede50-b58f-4a6d-962d-9cffd429c1af
 <details>
   <summary>📸 Click to view web page screenshot</summary>
   <br>
-  <img src="https://github.com/user-attachments/assets/c15c15e8-d346-488f-85f0-000f271a32f8" alt="Full Web Page Screenshot" width="100%">
+  <img src="https://github.com/user-attachments/assets/cae2c596-8551-4dbf-80a3-6a9b4cfec58d" alt="Full Web Page Screenshot" width="100%">
 </details>
 
 ---
@@ -376,7 +376,7 @@ https://github.com/user-attachments/assets/ae0ede50-b58f-4a6d-962d-9cffd429c1af
 <details>
   <summary>📸 Click to view web page screenshot</summary>
   <br>
-  <img src="https://github.com/user-attachments/assets/bf615c6a-7b1c-482c-8b24-e6401d6a16f5" alt="Full Web Page Screenshot" width="100%">
+  <img src="https://github.com/user-attachments/assets/9adc2ea3-9705-4f61-9d47-329f4d17b373" alt="Full Web Page Screenshot" width="100%">
 </details>
 
 ---
@@ -386,7 +386,7 @@ https://github.com/user-attachments/assets/ae0ede50-b58f-4a6d-962d-9cffd429c1af
 <details>
   <summary>📸 Click to view web page screenshot</summary>
   <br>
-  <img src="https://github.com/user-attachments/assets/72fd1cd9-4b06-4bed-838a-e9cf86b29a0f" alt="Full Web Page Screenshot" width="100%">
+  <img src="https://github.com/user-attachments/assets/55726a19-c071-405c-afef-ab50f119f3e0" alt="Full Web Page Screenshot" width="100%">
 </details>
 
 ---
@@ -396,7 +396,7 @@ https://github.com/user-attachments/assets/ae0ede50-b58f-4a6d-962d-9cffd429c1af
 <details>
   <summary>📸 Click to view web page screenshot</summary>
   <br>
-  <img src="https://github.com/user-attachments/assets/f6a57e32-925f-4c3d-8e04-763907acef33" alt="Full Web Page Screenshot" width="100%">
+  <img src="https://github.com/user-attachments/assets/35c0ff19-fec5-4734-a103-99f260ea7419" alt="Full Web Page Screenshot" width="100%">
 </details>
 
 ---
@@ -406,7 +406,7 @@ https://github.com/user-attachments/assets/ae0ede50-b58f-4a6d-962d-9cffd429c1af
 <details>
   <summary>📸 Click to view web page screenshot</summary>
   <br>
-  <img src="https://github.com/user-attachments/assets/ac068b1d-65af-4677-8b46-4e711e430c48" alt="Full Web Page Screenshot" width="100%">
+  <img src="https://github.com/user-attachments/assets/bafdc486-fc2b-4399-99c9-2e6e444d8a18" alt="Full Web Page Screenshot" width="100%">
 </details>
 
 ---
@@ -416,7 +416,7 @@ https://github.com/user-attachments/assets/ae0ede50-b58f-4a6d-962d-9cffd429c1af
 <details>
   <summary>📸 Click to view web page screenshot</summary>
   <br>
-  <img src="https://github.com/user-attachments/assets/1322a32f-7b36-4f80-8c4a-3f09f42022b6" alt="Full Web Page Screenshot" width="100%">
+  <img src="https://github.com/user-attachments/assets/2559606d-6025-416c-99b1-8a78e046d31b" alt="Full Web Page Screenshot" width="100%">
 </details>
 
 ---
@@ -426,7 +426,7 @@ https://github.com/user-attachments/assets/ae0ede50-b58f-4a6d-962d-9cffd429c1af
 <details>
   <summary>📸 Click to view web page screenshot</summary>
   <br>
-  <img src="https://github.com/user-attachments/assets/1df59191-45e7-4238-9f8c-184492af86e9" alt="Full Web Page Screenshot" width="100%">
+  <img src="https://github.com/user-attachments/assets/8b1efce6-1d3b-490c-8d73-9dbde39c2a53" alt="Full Web Page Screenshot" width="100%">
 </details>
 
 ---
@@ -436,7 +436,7 @@ https://github.com/user-attachments/assets/ae0ede50-b58f-4a6d-962d-9cffd429c1af
 <details>
   <summary>📸 Click to view web page screenshot</summary>
   <br>
-  <img src="https://github.com/user-attachments/assets/44edc9c2-f4dd-4fb7-bd09-d2c0a28972c2" alt="Full Web Page Screenshot" width="100%">
+  <img src="https://github.com/user-attachments/assets/53d82189-6cb9-4489-835b-b929624181de" alt="Full Web Page Screenshot" width="100%">
 </details>
 
 ---
@@ -446,7 +446,7 @@ https://github.com/user-attachments/assets/ae0ede50-b58f-4a6d-962d-9cffd429c1af
 <details>
   <summary>📸 Click to view web page screenshot</summary>
   <br>
-  <img src="https://github.com/user-attachments/assets/812ca41c-5e15-4144-8774-d5eff7559957" alt="Full Web Page Screenshot" width="100%">
+  <img src="https://github.com/user-attachments/assets/9c7336a1-9770-4881-bfcc-3de331812789" alt="Full Web Page Screenshot" width="100%">
 </details>
 
 ---
@@ -456,7 +456,7 @@ https://github.com/user-attachments/assets/ae0ede50-b58f-4a6d-962d-9cffd429c1af
 <details>
   <summary>📸 Click to view web page screenshot</summary>
   <br>
-  <img src="https://github.com/user-attachments/assets/2ed4eaa7-ab76-489c-9577-6c0edb8db62c" alt="Full Web Page Screenshot" width="100%">
+  <img src="https://github.com/user-attachments/assets/d918e6bf-7b92-42ad-bf17-c38ef1c32615" alt="Full Web Page Screenshot" width="100%">
 </details>
 
 ---
