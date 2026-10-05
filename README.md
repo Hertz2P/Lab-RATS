@@ -309,7 +309,7 @@ https://github.com/user-attachments/assets/92767769-a141-42ad-a285-481e552d4706
 
 ### Built APK *(C2 Server)* Installed on Android Device:
 
-<img width="269" height="577" alt="Screenshot 2026-10-03 at 3 29 37 AM" src="https://github.com/user-attachments/assets/494bd9fa-ecda-42a1-8b1f-e13a868a9276" />
+<img width="258" height="550" alt="Screenshot 2026-10-05 at 6 47 21 AM" src="https://github.com/user-attachments/assets/63bc22d1-70cb-47c2-b4ed-f99dc0464ab0" />
 
 ---
 
