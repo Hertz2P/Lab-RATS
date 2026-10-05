@@ -1,6 +1,6 @@
 # Lab-RATS: Contributions
-
-<img width="3880" height="3472" alt="app_logo" src="https://github.com/user-attachments/assets/8ecc48c0-3f06-45fb-97cd-40318b3925b0" />
+<p align="center">
+<img width="1435" height="391" alt="Screenshot 2026-10-05 at 1 13 59 AM" src="https://github.com/user-attachments/assets/9112b5a0-e0f8-40df-aa83-87eb203f2890" />
 
 ### **We don't do corporate bureaucracy here**. We do **technical elegance and operational efficiency**.
 If you've got a **better way to bypass a sandbox, optimize a payload**, or **harden the stealth engine, we want it**.
