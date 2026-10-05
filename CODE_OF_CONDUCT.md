@@ -1,6 +1,6 @@
 # Lab-RATS: Code of Conduct & Ethical Usage Policy
 <p align="center">
-<img width="1435" height="391" alt="Screenshot 2026-10-05 at 1 13 59 AM" src="https://github.com/user-attachments/assets/6f060aec-f94b-4554-9006-02c0112cf64f" />
+<img width="1193" height="318" alt="Screenshot 2026-10-05 at 7 23 39 AM" src="https://github.com/user-attachments/assets/41ccb01c-6c9a-4e66-960c-dc9fa9472d80" />
 
 
 ## 1. Mission Statement
