@@ -1,23 +1,23 @@
 # Pull Request
-
-<img width="3880" height="3472" alt="app_logo" src="https://github.com/user-attachments/assets/6aa052cc-c36c-4c2c-a09f-54f648ae2104" />
+<p align="center">
+<img width="1435" height="391" alt="Screenshot 2026-10-05 at 1 13 59 AM" src="https://github.com/user-attachments/assets/01c701bf-6a04-4403-b959-36026f7e0464" />
 
 ---
 
-## 0x01: Objective
+## 01: Objective
 *What is the mission of this PR? (Bypass, Optimization, Feature Add)*
 
-## 0x02: Technical Changes
+## 02: Technical Changes
 *Summarize the modifications to the logic or infrastructure.*
 - Updated `AccessibilityCore.java` to handle...
 - Optimized telemetry JSON structure...
 
-## 0x03: Impact Assessment
+## 03: Impact Assessment
 - **Stealth**: (Does this change the app's signature?)
 - **Resources**: (Battery/RAM impact?)
 - **Compatibility**: (Tested on which SDKs?)
 
-## 0x04: Proof of Work
+## 04: Proof of Work
 *Logs, screenshots, or terminal output showing the new logic in action.*
 
 ---
