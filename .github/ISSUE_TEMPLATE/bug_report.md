@@ -1,6 +1,6 @@
 # Bug Report
 <p align="center">
-<img width="3844" height="2264" alt="14634" src="https://github.com/user-attachments/assets/75ef3666-90f9-4e99-b3ec-4b515fb35c51" />
+<img width="1193" height="318" alt="Screenshot 2026-10-05 at 7 23 39 AM" src="https://github.com/user-attachments/assets/cfa80796-d322-4568-b080-f2276e8205f0" />
 
 ---
 
