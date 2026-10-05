@@ -1,6 +1,6 @@
 # Bug Report
-
-<img width="3880" height="3472" alt="app_logo" src="https://github.com/user-attachments/assets/2336dee4-f91d-4109-b89c-21e6c08a63ce" />
+<p align="center">
+<img width="3844" height="2264" alt="14634" src="https://github.com/user-attachments/assets/75ef3666-90f9-4e99-b3ec-4b515fb35c51" />
 
 ---
 
@@ -16,21 +16,21 @@
 
 ---
 
-## 0x01: The Symptom
+## 01: The Symptom
 *A clear and concise description of the failure.*
 
-## 0x02: Trace Data
+## 02: Trace Data
 *What steps lead to this failure?*
 1. Initialize service...
 2. Trigger payload...
 3. Observer crash/error...
 
-## 0x03: Environment Info
+## 03: Environment Info
 - **Hardware**: (e.g., Samsung S24 Ultra)
 - **OS/SDK**: (e.g., OneUI 8.5 / API 35)
 - **App Version**: (v1.5.0)
 
-## 0x04: Logs / Visuals
+## 04: Logs / Visuals
 *Paste relevant logcat output or attach screenshots of the failure.*
 
 ---
