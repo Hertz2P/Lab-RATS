@@ -376,8 +376,7 @@ Once the **Target device** downloads the **APK**:
 ---
 
 ### Donate:
-<img src="https://img.shields.io
-/badge/Buy_Me_A_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black">
+[<img src="https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black">](https://buymeacoffee.com/k4n3co)
 
 **https://buymeacoffee.com/k4n3co**
 
